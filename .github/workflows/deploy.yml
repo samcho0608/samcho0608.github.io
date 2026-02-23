@@ -1,0 +1,65 @@
+# GitHub Actions Workflow — Deploy Quartz to GitHub Pages
+#
+# SETUP INSTRUCTIONS:
+#   1. Place this file at: .github/workflows/deploy.yml in your repo root
+#   2. In your GitHub repo → Settings → Pages:
+#        Source: "GitHub Actions"
+#   3. Push to the `v4` branch to trigger your first deploy.
+#
+# After setup, every push to `v4` automatically rebuilds and republishes your site.
+
+name: Deploy Quartz site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - v4          # Quartz uses `v4` as its main branch by default
+
+# Grant the workflow permission to deploy to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only allow one deployment at a time
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  # ── Job 1: Build the static site ──────────────────────────
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Full history needed so Quartz can show "last modified" dates
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Quartz
+        run: npx quartz build
+
+      - name: Upload built site as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public   # Quartz outputs to the `public/` folder
+
+  # ── Job 2: Deploy the artifact to GitHub Pages ────────────
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
