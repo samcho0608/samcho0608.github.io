@@ -14,6 +14,7 @@ on:
   push:
     branches:
       - v4          # Quartz uses `v4` as its main branch by default
+  workflow_call:    # Allow other workflows (e.g. publish-next) to trigger this
 
 # Grant the workflow permission to deploy to GitHub Pages
 permissions:
