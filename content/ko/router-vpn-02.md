@@ -23,7 +23,7 @@ tags:
 series: "home-infra"
 series_order: 2
 lang: ko
-draft: true
+draft: false
 ---
 
 # 자취방 홈 인프라 구축기 2편: VPN 서버 구축 — DDNS부터 Connection Timeout 해결까지

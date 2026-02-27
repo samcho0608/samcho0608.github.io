@@ -23,7 +23,7 @@ tags:
 series: "home-infra"
 series_order: 2
 lang: en
-draft: true
+draft: false
 ---
 
 ## DDNS First

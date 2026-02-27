@@ -1,3 +1,2 @@
-content/ko/router-vpn-02.md content/en/router-vpn-02.md
 content/ko/router-vpn-03.md content/en/router-vpn-03.md
 content/ko/llm-as-mentor.md content/en/llm-as-mentor.md
