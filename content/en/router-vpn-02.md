@@ -26,17 +26,11 @@ lang: en
 draft: true
 ---
 
-## DDNS First, For a Reason
+## DDNS First
 
-I started with DDNS even though it seems like a later step. The reason: I need the hostname in the OpenVPN config file before I can test the connection. So setting it up first makes sense.
+DDNS before OpenVPN — because the hostname ends up inside the `.ovpn` config file, and I'd rather not regenerate it later.
 
-**On the Archer C6:**
-
-1. VPN Server → OpenVPN Server → DDNS
-2. Service Provider: TP-Link
-3. Check the hostname that gets assigned (mine was `samcho.tplinkddns.com`)
-
-That hostname will always point to the Archer's current public IP, even if the ISP changes it. This is crucial for the VPN — instead of hardcoding an IP that might change tomorrow, the client uses a stable name.
+**On the Archer C6:** Advanced → Network → Dynamic DNS → TP-Link → log in → pick a name → get `[name].tplinkdns.com`.
 
 ## OpenVPN Server: Generate, Configure, Export
 
@@ -94,9 +88,7 @@ remote 192.168.219.107 1194 udp
 
 There it is. The `remote` line is pointing to a **private IP address**. That's the bug.
 
-When the Archer generates the `.ovpn` file, it writes its own WAN IP as the remote address. That makes sense from its perspective — it knows it's at 192.168.219.107. But that IP is private. It only means something inside the LG router's network. From the internet (from my iPhone on LTE), that address is unreachable.
-
-This is a direct consequence of double NAT. The Archer doesn't know the public IP. It can't reach the internet and check "what's my public IP?" It only sees the private IP the LG router gave it.
+The Archer wrote its own WAN IP as the remote address — which is 192.168.219.107, a private IP that only exists inside the LG router's network. The Archer has no way to know its actual public IP. Classic double NAT problem.
 
 ```mermaid
 graph LR
@@ -138,17 +130,4 @@ Now that VPN is working, I need a place for IoT devices to live without being ab
 - Disable "Allow guests to access my local network" (or equivalent — exact wording varies by router)
 - Enable "Isolate wireless clients" (guests can't see each other either)
 
-Currently I only have one Matter switch, and I haven't put it on the guest network yet. I'm waiting for the Samsung SmartThings hub to arrive — that's the central controller for multiple IoT devices. Once it's here, both the hub and any devices it controls will live on the guest network.
-
-The beauty of this setup: even if the SmartThings hub or a connected device gets compromised, it's on a different network segment. It can access the internet (for updates, cloud communication) but not my MacBook.
-
-## What's Done, What's Next
-
-VPN is functional. I can connect from anywhere on the internet and access the Archer. But the Archer itself isn't useful yet — I haven't attached anything to it. The next step is making the MacBook accessible over the VPN with file sharing and remote desktop.
-
----
-
-| Post | Title |
-|---|---|
-| ← Previous | [[en/router-vpn-01\|Part 1: Why I Built It and How I Designed It]] |
-| → Next | [[en/router-vpn-03\|Part 3: MacBook as Home Server]] |
+Only one Matter switch right now, so the guest network is ready but mostly empty. Waiting for a Samsung SmartThings hub — once it arrives, IoT devices move there permanently.

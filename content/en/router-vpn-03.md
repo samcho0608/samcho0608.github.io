@@ -25,24 +25,11 @@ lang: en
 draft: true
 ---
 
-## Why Not a Real NAS?
+The LG router's USB port is blocked by ISP firmware. The Archer has no USB port. A standalone NAS felt like overkill. **MacBook is already sitting there** — so: MacBook becomes the file server and remote desktop.
 
-The obvious upgrade path would be to buy a NAS — a dedicated network storage device. Synology, QNAP, something. But I didn't.
-
-First reason: the LG U+ router has a USB port for external drives. That could have been an easy NAS setup. Except the ISP firmware blocks it. I looked into it, tried a few things. Nope, not available.
-
-Second reason: the Archer C6 doesn't have a USB port at all.
-
-Third reason: the MacBook is already there. It's powerful. More storage, faster processor, better everything than an entry-level NAS. Using what I have makes more sense than buying new hardware for a home lab.
-
-So instead: **MacBook becomes the file server and remote desktop box.**
-
-## Two Goals
-
-1. **File sharing over SMB** — access MacBook files from iPhone like it's a NAS
-2. **Remote desktop over VNC** — see and control the MacBook screen from iPhone
-
-Both happen over the VPN tunnel. Security is built in.
+Two goals, both over the VPN tunnel:
+1. **SMB file sharing** — access MacBook files from iPhone
+2. **VNC remote desktop** — see and control the MacBook screen from iPhone
 
 ## SMB: File Sharing in System Settings
 
@@ -188,15 +175,4 @@ graph TB
 
 From anywhere, I can connect to the VPN. Once connected, I'm on the Archer's network. I can browse MacBook files via SMB. I can see the MacBook desktop via VNC and control it. The guest network stays isolated.
 
-## What's Next
-
-This is the core setup complete. The guest network is ready for IoT devices — I'm waiting for the Samsung SmartThings hub to arrive so I can test it with actual smart home devices. The file sharing and remote desktop are working.
-
-There will be future additions: maybe a small SSD for faster backups, maybe experimenting with other home automation platforms. But the architecture is solid. The double NAT problem is solved. The VPN works. The MacBook is accessible.
-
----
-
-| Post | Title |
-|---|---|
-| ← Previous | [[en/router-vpn-02\|Part 2: Building the VPN Server]] |
-| Series start | [[en/router-vpn-01\|Part 1: Why I Built It and How I Designed It]] |
+The guest network is ready and waiting — Samsung SmartThings hub is on the way. Once it arrives, IoT devices move there for real.
