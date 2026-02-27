@@ -35,7 +35,7 @@ jobs:
           echo "has_next=true" >> $GITHUB_OUTPUT
           echo "📬 Next to publish: $NEXT"
 
-      - name: Set draft: false
+      - name: "Set draft: false"
         if: steps.queue.outputs.has_next == 'true'
         run: |
           for FILE in ${{ steps.queue.outputs.next_files }}; do
