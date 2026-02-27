@@ -25,8 +25,6 @@ lang: ko
 draft: false
 ---
 
-# 자취방 홈 인프라 구축기 3편: 맥북 홈서버 — SMB, VNC, 그리고 Private MAC 문제
-
 VPN 터널이 뚫렸으니 그 끝에 뭔가를 붙여야 한다. LG 공유기 USB 포트에 외장 하드를 붙이려 했는데 통신사 펌웨어에서 막혀 있었다. Archer C6는 USB 포트 자체가 없다. 별도 NAS는 과하고 — **맥북이 있다.**
 
 목표는 두 가지:
@@ -55,10 +53,10 @@ VPN 터널이 뚫렸으니 그 끝에 뭔가를 붙여야 한다. LG 공유기 U
 
 공유기 클라이언트 목록을 보니 맥북으로 보이는 항목이 두 개였다:
 
-- `macbook pro` — MAC 주소가 `en0` 하드웨어 주소와 다름
-- `samcho` — MAC 주소가 `en0` 하드웨어 주소와 일치
+- `client-a` — `192.168.0.224`를 받음
+- `client-b` — IP가 없거나 다른 IP를 받음
 
-`macbook pro` 항목이 실제로 접속 중인 기기였고, 그 MAC 주소는 맥북이 공유기에 보고하는 **임의 생성 주소**였다.
+`client-a` 항목의 MAC 주소를 보니 예약에 사용한 `en0` 하드웨어 주소와 달랐다. 이 항목이 실제로 접속 중인 기기였고, 공유기에 보고된 값은 **임의 생성 주소**였다.
 
 애플은 iOS 14, macOS Big Sur부터 프라이버시 보호를 위해 와이파이 네트워크마다 실제 하드웨어 주소 대신 무작위 MAC 주소를 사용하는 **Private Wi-Fi Address** 기능을 기본으로 켜뒀다. 덕분에 공유기는 맥북의 실제 `en0` 주소를 볼 수 없었고, 예약 규칙이 적용되지 않았다.
 
@@ -115,7 +113,7 @@ App Store에서 **VNC Viewer** (RealVNC 제공) 설치 후:
 graph TD
     Internet["🌐 인터넷"]
     LG["LG U+ 공유기<br/>포트 포워딩 UDP 1194 → 192.168.219.107<br/>DHCP 고정: C6 = 192.168.219.107"]
-    C6["Archer C6<br/>VPN 서버 · 게스트 네트워크<br/>DDNS: [이름].tplinkdns.com"]
+    C6["Archer C6<br/>VPN 서버 · 게스트 네트워크<br/>DDNS: foobar.tplinkdns.com"]
     MacBook["맥북 192.168.0.107<br/>SMB 파일 서버<br/>VNC 원격 제어"]
     IoT["IoT 기기<br/>(게스트 네트워크)"]
     Outside["📱 외부 아이폰 (LTE)"]

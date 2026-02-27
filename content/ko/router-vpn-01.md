@@ -23,8 +23,6 @@ lang: ko
 draft: false
 ---
 
-# 자취방 홈 인프라 구축기 1편: 왜 만들었고, 어떻게 설계했나
-
 ## 시작은 유튜브였다
 
 자취남 채널을 보다가 자취방 IoT 세팅 영상을 봤다. 조명을 자동으로 켜고 끄고, 스마트폰으로 원격으로 확인하는 것들이 생각보다 어렵지 않아 보였다. 영상 보고 바로 Matter 기반 스마트 스위치를 하나 질렀다.
@@ -59,7 +57,7 @@ VPN이 되면 외부에서 집 네트워크에 접속할 수 있다. 접속할 �
 graph TD
     Internet["🌐 인터넷"]
     LG["주 라우터 (ISP 제공)<br/>포트 포워딩 + DHCP 고정 할당"]
-    C6["부 라우터 (공기계)<br/>VPN 서버 · 게스트 네트워크<br/>DDNS: myhome.tplinkdns.com"]
+    C6["부 라우터 (공기계)<br/>VPN 서버 · 게스트 네트워크<br/>DDNS: foobar.tplinkdns.com"]
     MacBook["맥북<br/>SMB 파일 서버 · VNC 원격 제어<br/>고정 IP: 192.168.0.107"]
     IoT["IoT 기기들<br/>Matter 스마트 스위치<br/>(향후: 삼성 스마트허브 등)"]
     Outside["📱 외부 아이폰 (LTE)"]

@@ -60,12 +60,12 @@ Reboot the MacBook, reconnect to Wi-Fi. It should get 192.168.0.107.
 But it doesn't. It got 192.168.0.224 instead.
 
 I checked the Archer's DHCP client list. There are **two MacBook entries**:
-- `macbook pro` — no IP assigned yet (or different IP)
-- `samcho` — got 192.168.0.224
+- `client-a` — got 192.168.0.224
+- `client-b` — no IP assigned yet (or different IP)
 
 That's weird. I only have one MacBook.
 
-Then I looked at the MAC addresses. The `samcho` entry has a MAC that doesn't match `aa:bb:cc:dd:ee:ff`. It's something like `aa:bb:cc:22:33:44` — the first three octets are the same (Apple's vendor prefix) but the last three are different.
+Then I looked at the MAC addresses. The `client-a` entry has a MAC that doesn't match `aa:bb:cc:dd:ee:ff`. It's something like `aa:bb:cc:22:33:44` — the first three octets are the same (Apple's vendor prefix) but the last three are different.
 
 **This is Private Wi-Fi Address.**
 

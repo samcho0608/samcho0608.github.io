@@ -26,13 +26,11 @@ lang: ko
 draft: false
 ---
 
-# 자취방 홈 인프라 구축기 2편: VPN 서버 구축 — DDNS부터 Connection Timeout 해결까지
-
 ## 1. DDNS 설정
 
 Archer C6 관리 페이지(`tplinkwifi.net` 또는 `192.168.0.1`)에 접속한다.
 
-**고급 → 네트워크 → Dynamic DNS**로 이동해 TP-Link를 서비스 제공자로 선택하고, TP-Link ID로 로그인한다. 원하는 이름을 입력하면 `[이름].tplinkdns.com` 형태의 무료 도메인이 생성된다.
+**고급 → 네트워크 → Dynamic DNS**로 이동해 TP-Link를 서비스 제공자로 선택하고, TP-Link ID로 로그인한다. 원하는 이름을 입력하면 `foobar.tplinkdns.com` 형태의 무료 도메인이 생성된다.
 
 이걸 먼저 설정하는 이유가 있다. 곧 설명할 `.ovpn` 파일 안에 이 이름이 들어가야 하는데, 나중에 생성하면 파일을 다시 내보내야 하는 번거로움이 생긴다.
 
@@ -44,6 +42,8 @@ Archer C6 관리 페이지(`tplinkwifi.net` 또는 `192.168.0.1`)에 접속한�
 - 서비스 유형: **UDP**, 포트: **1194** (기본값)
 - 저장 후 **인증서 생성(Generate)** 클릭
 - 생성 완료 후 **구성 내보내기(Export Configuration)** 클릭 → `.ovpn` 파일 저장
+
+내보낸 파일은 아이폰에 설치할 클라이언트 설정이며, 인증서/서버 주소/포트 정보가 모두 포함된다.
 
 ## 3. LG U+ 공유기에 포트 포워딩
 
@@ -104,7 +104,7 @@ graph LR
 remote 192.168.219.107 1194
 
 # 수정 후
-remote [내DDNS이름].tplinkdns.com 1194
+remote foobar.tplinkdns.com 1194
 ```
 
 수정한 파일을 아이폰에 다시 등록하고 (기존 프로필 삭제 후 ADD), LTE 상태에서 재시도.
@@ -112,11 +112,11 @@ remote [내DDNS이름].tplinkdns.com 1194
 ```mermaid
 graph LR
     iPhone["📱 아이폰 (LTE)"]
-    DNS["DNS 조회<br/>[이름].tplinkdns.com<br/>→ 211.45.xxx.xxx"]
+    DNS["DNS 조회<br/>foobar.tplinkdns.com<br/>→ 211.45.xxx.xxx"]
     LG["LG 공유기<br/>포트 포워딩: 1194 → C6"]
     C6["Archer C6 VPN 서버"]
 
-    iPhone -->|"remote [이름].tplinkdns.com:1194"| DNS
+    iPhone -->|"remote foobar.tplinkdns.com:1194"| DNS
     DNS --> LG
     LG --> C6
     C6 -->|"✅ 연결 성공"| iPhone

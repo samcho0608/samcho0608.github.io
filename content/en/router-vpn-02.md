@@ -107,11 +107,11 @@ graph LR
 The fix is simple: **edit the `remote` line to use the DDNS hostname.**
 
 ```
-remote samcho.tplinkddns.com 1194 udp
+remote foobar.tplinkdns.com 1194 udp
 ```
 
 Now when the iPhone connects:
-1. Resolve `samcho.tplinkddns.com` → your current public IP
+1. Resolve `foobar.tplinkdns.com` → your current public IP
 2. Send UDP 1194 to that public IP
 3. LG router sees port 1194 on its public IP → forwards to 192.168.219.107 (Archer)
 4. Archer receives the connection → tunnel established
