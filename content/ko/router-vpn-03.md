@@ -22,7 +22,7 @@ tags:
 series: "home-infra"
 series_order: 3
 lang: ko
-draft: true
+draft: false
 ---
 
 # 자취방 홈 인프라 구축기 3편: 맥북 홈서버 — SMB, VNC, 그리고 Private MAC 문제

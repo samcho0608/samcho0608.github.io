@@ -22,7 +22,7 @@ tags:
 series: "home-infra"
 series_order: 3
 lang: en
-draft: true
+draft: false
 ---
 
 The LG router's USB port is blocked by ISP firmware. The Archer has no USB port. A standalone NAS felt like overkill. **MacBook is already sitting there** — so: MacBook becomes the file server and remote desktop.
