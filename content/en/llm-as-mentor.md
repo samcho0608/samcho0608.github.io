@@ -13,7 +13,7 @@ tags:
   - homelab
   - tutorial
 lang: en
-draft: true
+draft: false
 ---
 
 ## The Setup

@@ -13,7 +13,7 @@ tags:
   - homelab
   - tutorial
 lang: ko
-draft: true
+draft: false
 ---
 
 # LLM으로 모르는 분야 파고드는 법 — 검색이 아닌 멘토로

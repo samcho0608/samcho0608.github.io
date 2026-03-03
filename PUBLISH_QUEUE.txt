@@ -1,1 +1,0 @@
-content/ko/llm-as-mentor.md content/en/llm-as-mentor.md
