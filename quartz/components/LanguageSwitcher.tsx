@@ -16,35 +16,25 @@ const LanguageSwitcher: QuartzComponent = ({
   if (!currentLang) return null
 
   const slug = fileData.slug!
-  const parts = slug.split("/")
-  // Expect slugs like "ko/router-vpn-01" or "en/llm-as-mentor"
-  if (parts.length < 2) return null
+  const isKoPage = currentLang === "ko"
 
-  const [, ...rest] = parts
-  const baseName = rest.join("/")
+  // URL structure:
+  //   EN: index, tech/router-vpn-01, ...
+  //   KO: ko/index, ko/tech/router-vpn-01, ...
+  // Counterpart: strip or prepend "ko/" prefix
+  const counterpartSlug: FullSlug = isKoPage
+    ? (slug.startsWith("ko/") ? slug.slice(3) : slug) as FullSlug
+    : (`ko/${slug}` as FullSlug)
 
-  // Find counterpart files in other languages
-  const counterparts: Array<{ lang: string; slug: FullSlug }> = []
+  const counterLang = isKoPage ? "en" : "ko"
+  const counterFile = allFiles.find(
+    (f) => f.slug === counterpartSlug && (f.frontmatter?.lang as string) === counterLang,
+  )
 
-  for (const file of allFiles) {
-    const fileLang = file.frontmatter?.lang as string | undefined
-    if (!fileLang || fileLang === currentLang) continue
-
-    const fileSlugParts = file.slug?.split("/") ?? []
-    if (fileSlugParts.length < 2) continue
-
-    const [fileLangDir, ...fileRest] = fileSlugParts
-    const fileBaseName = fileRest.join("/")
-
-    // Match same base filename in a different language folder
-    if (fileBaseName === baseName && fileLangDir === fileLang) {
-      counterparts.push({ lang: fileLang, slug: file.slug! as FullSlug })
-    }
-  }
-
-  if (counterparts.length === 0) return null
+  if (!counterFile) return null
 
   const currentMeta = LANG_META[currentLang] ?? { flag: "", label: currentLang }
+  const counterMeta = LANG_META[counterLang] ?? { flag: "", label: counterLang }
 
   return (
     <div class={classNames(displayClass, "language-switcher")}>
@@ -52,22 +42,13 @@ const LanguageSwitcher: QuartzComponent = ({
         {currentMeta.flag} {currentMeta.label}
       </span>
       <span class="lang-divider">·</span>
-      {counterparts.map(({ lang, slug: counterSlug }, i) => {
-        const meta = LANG_META[lang] ?? { flag: "", label: lang }
-        return (
-          <>
-            <a
-              key={lang}
-              href={resolveRelative(fileData.slug!, counterSlug)}
-              class="lang-link"
-              aria-label={`Read in ${meta.label}`}
-            >
-              {meta.flag} {meta.label}
-            </a>
-            {i < counterparts.length - 1 && <span class="lang-divider">·</span>}
-          </>
-        )
-      })}
+      <a
+        href={resolveRelative(fileData.slug!, counterpartSlug)}
+        class="lang-link"
+        aria-label={`Read in ${counterMeta.label}`}
+      >
+        {counterMeta.flag} {counterMeta.label}
+      </a>
     </div>
   )
 }

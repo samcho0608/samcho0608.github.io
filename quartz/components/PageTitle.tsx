@@ -1,4 +1,3 @@
-import { pathToRoot } from "../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
@@ -7,7 +6,8 @@ const PageTitle: QuartzComponent = ({ fileData, cfg, displayClass }: QuartzCompo
   const title = cfg?.pageTitle ?? i18n(cfg.locale).propertyDefaults.title
   const slug = fileData.slug!
   const isKoPage = slug.startsWith("ko/") || slug === "ko"
-  const baseDir = isKoPage ? "/ko/" : pathToRoot(slug)
+  // KO pages link to /ko/ home; EN pages always link to / (root home)
+  const baseDir = isKoPage ? "/ko/" : "/"
   return (
     <h2 class={classNames(displayClass, "page-title")}>
       <a href={baseDir}>{title}</a>

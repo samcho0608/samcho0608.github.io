@@ -24,6 +24,21 @@ interface FolderPageOptions extends FullPageLayout {
   sort?: (f1: QuartzPluginData, f2: QuartzPluginData) => number
 }
 
+function getLanguageHomeFolders(allFiles: QuartzPluginData[]): Set<SimpleSlug> {
+  return new Set(
+    allFiles
+      .map((file) => {
+        const slug = file.slug
+        const lang = file.frontmatter?.lang
+        if (!slug || typeof lang !== "string") return null
+        const expected = `${lang}/index`
+        if (slug !== expected) return null
+        return lang as SimpleSlug
+      })
+      .filter((folder): folder is SimpleSlug => folder !== null),
+  )
+}
+
 async function* processFolderInfo(
   ctx: BuildCtx,
   folderInfo: Record<SimpleSlug, ProcessedContent>,
@@ -131,12 +146,16 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
     async *emit(ctx, content, resources) {
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
+      const languageHomeFolders = getLanguageHomeFolders(allFiles)
 
       const folders: Set<SimpleSlug> = new Set(
         allFiles.flatMap((data) => {
           return data.slug
             ? _getFolders(data.slug).filter(
-                (folderName) => folderName !== "." && folderName !== "tags",
+                (folderName) =>
+                  folderName !== "." &&
+                  folderName !== "tags" &&
+                  !languageHomeFolders.has(folderName as SimpleSlug),
               )
             : []
         }),
@@ -148,6 +167,7 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
     async *partialEmit(ctx, content, resources, changeEvents) {
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
+      const languageHomeFolders = getLanguageHomeFolders(allFiles)
 
       // Find all folders that need to be updated based on changed files
       const affectedFolders: Set<SimpleSlug> = new Set()
@@ -155,7 +175,10 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
         if (!changeEvent.file) continue
         const slug = changeEvent.file.data.slug!
         const folders = _getFolders(slug).filter(
-          (folderName) => folderName !== "." && folderName !== "tags",
+          (folderName) =>
+            folderName !== "." &&
+            folderName !== "tags" &&
+            !languageHomeFolders.has(folderName as SimpleSlug),
         )
         folders.forEach((folder) => affectedFolders.add(folder))
       }

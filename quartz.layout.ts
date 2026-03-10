@@ -19,12 +19,27 @@ export const sharedPageComponents: SharedLayout = {
   }),
 }
 
+// EN explorer: show root-level content only (tech/ folder + EN posts)
+// Excludes ko/, tags/, en/ redirect, and the root index (accessed via PageTitle)
 const enExplorer = Component.Explorer({
-  filterFn: (node) => node.slugSegment !== "tags" && node.slugSegment !== "ko",
+  filterFn: (node) => {
+    const slug = node.slug
+    if (slug === "ko" || slug.startsWith("ko/")) return false
+    if (slug === "tags" || slug.startsWith("tags/")) return false
+    if (slug === "en" || slug.startsWith("en/")) return false
+    if (slug === "index") return false
+    return true
+  },
 })
 
+// KO explorer: show only ko/ subtree (ko/tech/ folder + KO posts)
+// Excludes ko/index (accessed via PageTitle)
 const koExplorer = Component.Explorer({
-  filterFn: (node) => node.slugSegment !== "tags" && node.slugSegment !== "en",
+  filterFn: (node) => {
+    const slug = node.slug
+    if (slug === "ko/index") return false
+    return slug === "ko" || slug.startsWith("ko/")
+  },
 })
 
 // components for pages that display a single page (e.g. a single note)
@@ -32,7 +47,7 @@ export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
     Component.ConditionalRender({
       component: Component.Breadcrumbs(),
-      condition: (page) => page.fileData.slug !== "index",
+      condition: (page) => page.fileData.slug !== "index" && page.fileData.slug !== "ko/index",
     }),
     Component.ArticleTitle(),
     Component.ConditionalRender({
@@ -73,7 +88,18 @@ export const defaultContentPageLayout: PageLayout = {
 
 // components for pages that display lists of pages  (e.g. tags or folders)
 export const defaultListPageLayout: PageLayout = {
-  beforeBody: [Component.Breadcrumbs(), Component.ArticleTitle(), Component.ContentMeta()],
+  beforeBody: [
+    Component.ConditionalRender({
+      component: Component.Breadcrumbs(),
+      condition: (page) => page.fileData.slug !== "index" && page.fileData.slug !== "ko/index",
+    }),
+    Component.ArticleTitle(),
+    Component.ConditionalRender({
+      component: Component.LanguageSwitcher(),
+      condition: (page) => !!page.fileData.frontmatter?.lang,
+    }),
+    Component.ContentMeta(),
+  ],
   left: [
     Component.PageTitle(),
     Component.MobileOnly(Component.Spacer()),
@@ -84,6 +110,7 @@ export const defaultListPageLayout: PageLayout = {
           grow: true,
         },
         { Component: Component.Darkmode() },
+        { Component: Component.ReaderMode() },
       ],
     }),
     Component.ConditionalRender({

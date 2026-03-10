@@ -53,19 +53,40 @@ export default ((opts?: Partial<BreadcrumbOptions>) => {
     const trie = (ctx.trie ??= trieFromAllFiles(allFiles))
     const slugParts = fileData.slug!.split("/")
     const pathNodes = trie.ancestryChain(slugParts)
+    const currentLang = fileData.frontmatter?.lang as string | undefined
 
     if (!pathNodes) {
       return null
     }
 
-    const crumbs: CrumbData[] = pathNodes.map((node, idx) => {
+    // For language-specific sections (e.g. ko/*), treat that language home
+    // as the breadcrumb root instead of showing it as an intermediate folder node.
+    const languageHome = allFiles
+      .filter((f) => {
+        const lang = f.frontmatter?.lang as string | undefined
+        const slug = f.slug
+        return lang === currentLang && !!slug && (slug === "index" || slug.endsWith("/index"))
+      })
+      .sort((a, b) => (a.slug?.split("/").length ?? 0) - (b.slug?.split("/").length ?? 0))[0]
+
+    const languageHomeSlug = languageHome?.slug
+      ? simplifySlug(languageHome.slug as FullSlug)
+      : ("/" as SimpleSlug)
+
+    const filteredPathNodes =
+      languageHomeSlug !== "/"
+        ? pathNodes.filter((node, idx) => idx === 0 || simplifySlug(node.slug) !== languageHomeSlug)
+        : pathNodes
+
+    const crumbs: CrumbData[] = filteredPathNodes.map((node, idx) => {
       const crumb = formatCrumb(node.displayName, fileData.slug!, simplifySlug(node.slug))
       if (idx === 0) {
         crumb.displayName = options.rootName
+        crumb.path = resolveRelative(fileData.slug!, languageHomeSlug)
       }
 
       // For last node (current page), set empty path
-      if (idx === pathNodes.length - 1) {
+      if (idx === filteredPathNodes.length - 1) {
         crumb.path = ""
       }
 

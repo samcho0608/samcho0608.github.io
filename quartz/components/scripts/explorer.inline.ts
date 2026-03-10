@@ -156,6 +156,7 @@ function createFolderNode(
 
 async function setupExplorer(currentSlug: FullSlug) {
   const allExplorers = document.querySelectorAll("div.explorer") as NodeListOf<HTMLElement>
+  const isKoPage = currentSlug === "ko" || currentSlug.startsWith("ko/")
 
   for (const explorer of allExplorers) {
     const dataFns = JSON.parse(explorer.dataset.dataFns || "{}")
@@ -178,7 +179,19 @@ async function setupExplorer(currentSlug: FullSlug) {
 
     const data = await fetchData
     const entries = [...Object.entries(data)] as [FullSlug, ContentDetails][]
-    const trie = FileTrieNode.fromEntries(entries)
+    const languageEntries = entries.filter(([slug]) => {
+      const isKoNode = slug === "ko/index" || slug.startsWith("ko/")
+      return isKoPage ? isKoNode : !isKoNode
+    })
+    const trie = FileTrieNode.fromEntries(languageEntries)
+
+    // Treat ko/index as the KO homepage root in explorer (not a visible top-level folder).
+    if (isKoPage) {
+      const koRoot = trie.children.find((child) => child.isFolder && child.slugSegment === "ko")
+      if (koRoot) {
+        trie.children = koRoot.children
+      }
+    }
 
     // Apply functions in order
     for (const fn of opts.order) {

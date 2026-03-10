@@ -75,18 +75,6 @@ body {
   display: inline-block;
 }
 
-// Hide the en/ and ko/ folder headers — posts appear directly without the language wrapper
-.folder-container[data-folderpath="en/index"],
-.folder-container[data-folderpath="ko/index"] {
-  display: none;
-}
-
-// Remove the indent so children sit flush at the root level
-.folder-container[data-folderpath="en/index"] + .folder-outer > ul,
-.folder-container[data-folderpath="ko/index"] + .folder-outer > ul {
-  padding-left: 0;
-}
-
 .center article {
   border: 1px solid var(--surfaceBorder);
   border-radius: 26px;
