@@ -112,4 +112,4 @@ An LLM can be that mentor if you ask it the right way.
 
 ## Link Back
 
-[[en/router-vpn-01|See the full build log →]]
+[[tech/router-vpn-01|See the full build log →]]

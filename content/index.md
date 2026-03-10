@@ -1,5 +1,6 @@
 ---
-title: Home
+title: My Digital Garden
+lang: en
 ---
 
-<script>window.location.replace("/en/")</script>
+A space where I write through problems — home networking, LLMs as thinking tools, and whatever else I'm figuring out along the way.
