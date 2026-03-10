@@ -89,12 +89,26 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     enableRadial,
   } = JSON.parse(graph.dataset["cfg"]!) as D3Config
 
-  const data: Map<SimpleSlug, ContentDetails> = new Map(
+  const allData: Map<SimpleSlug, ContentDetails> = new Map(
     Object.entries<ContentDetails>(await fetchData).map(([k, v]) => [
       simplifySlug(k as FullSlug),
       v,
     ]),
   )
+
+  // Filter nodes by language: KO pages show KO nodes, everything else shows EN nodes.
+  // Tag nodes and the index page are kept in both contexts.
+  const isKoPage = slug.startsWith("ko/")
+  const data = new Map<SimpleSlug, ContentDetails>()
+  for (const [key, value] of allData) {
+    const isKoNode = key.startsWith("ko/")
+    const isTag = key.startsWith("tags/")
+    const isIndex = key === "index"
+    if (isTag || isIndex || (isKoPage ? isKoNode : !isKoNode)) {
+      data.set(key, value)
+    }
+  }
+
   const links: SimpleLinkData[] = []
   const tags: SimpleSlug[] = []
   const validLinks = new Set(data.keys())

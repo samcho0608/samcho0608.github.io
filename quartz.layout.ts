@@ -19,6 +19,14 @@ export const sharedPageComponents: SharedLayout = {
   }),
 }
 
+const enExplorer = Component.Explorer({
+  filterFn: (node) => node.slugSegment !== "tags" && node.slugSegment !== "ko",
+})
+
+const koExplorer = Component.Explorer({
+  filterFn: (node) => node.slugSegment !== "tags" && node.slugSegment !== "en",
+})
+
 // components for pages that display a single page (e.g. a single note)
 export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
@@ -27,7 +35,10 @@ export const defaultContentPageLayout: PageLayout = {
       condition: (page) => page.fileData.slug !== "index",
     }),
     Component.ArticleTitle(),
-    Component.LanguageSwitcher(),
+    Component.ConditionalRender({
+      component: Component.LanguageSwitcher(),
+      condition: (page) => !!page.fileData.frontmatter?.lang,
+    }),
     Component.ContentMeta(),
     Component.TagList(),
   ],
@@ -44,7 +55,14 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.ConditionalRender({
+      component: enExplorer,
+      condition: (page) => !page.fileData.slug?.startsWith("ko/"),
+    }),
+    Component.ConditionalRender({
+      component: koExplorer,
+      condition: (page) => !!page.fileData.slug?.startsWith("ko/"),
+    }),
   ],
   right: [
     Component.Graph(),
@@ -68,7 +86,14 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.ConditionalRender({
+      component: enExplorer,
+      condition: (page) => !page.fileData.slug?.startsWith("ko/"),
+    }),
+    Component.ConditionalRender({
+      component: koExplorer,
+      condition: (page) => !!page.fileData.slug?.startsWith("ko/"),
+    }),
   ],
   right: [],
 }
