@@ -14,6 +14,11 @@ async function mouseEnterHandler(
     return
   }
 
+  // No popover for footnote back-reference links (↩)
+  if (link.hasAttribute("data-footnote-backref")) {
+    return
+  }
+
   async function setPosition(popoverElement: HTMLElement) {
     const { x, y } = await computePosition(link, popoverElement, {
       strategy: "fixed",
@@ -43,6 +48,41 @@ async function mouseEnterHandler(
   const hash = decodeURIComponent(targetUrl.hash)
   targetUrl.hash = ""
   targetUrl.search = ""
+
+  // For footnote references: show only the footnote content from the current page
+  if (link.hasAttribute("data-footnote-ref") && hash.startsWith("#user-content-fn-")) {
+    const footnotePopoverId = `popover-fn-${hash.slice(1)}`
+    const prevFnPopover = document.getElementById(footnotePopoverId)
+    if (prevFnPopover) {
+      clearActivePopover()
+      prevFnPopover.classList.add("active-popover")
+      setPosition(prevFnPopover)
+      return
+    }
+
+    const footnoteEl = document.getElementById(hash.slice(1))
+    if (!footnoteEl) return
+
+    const popoverElement = document.createElement("div")
+    popoverElement.id = footnotePopoverId
+    popoverElement.classList.add("popover")
+    const popoverInner = document.createElement("div")
+    popoverInner.classList.add("popover-inner")
+    popoverElement.appendChild(popoverInner)
+
+    const clone = footnoteEl.cloneNode(true) as HTMLElement
+    clone.querySelectorAll("[data-footnote-backref]").forEach((el) => el.remove())
+    popoverInner.appendChild(clone)
+
+    document.body.appendChild(popoverElement)
+    if (activeAnchor !== this) return
+
+    clearActivePopover()
+    popoverElement.classList.add("active-popover")
+    setPosition(popoverElement)
+    return
+  }
+
   const popoverId = `popover-${link.pathname}`
   const prevPopoverElement = document.getElementById(popoverId)
 
