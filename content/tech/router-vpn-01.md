@@ -51,7 +51,7 @@ Gemini mentioned something while explaining the VPN option: you could put IoT de
 
 **IoT security** became reason one.
 
-**Learning** was reason two. I recently changed jobs, and my new role touches more infrastructure-adjacent work than before. Port forwarding, network segmentation, DNS — I'd heard these terms but never built anything with them. Doing it hands-on felt like the fastest way to actually understand how packets move.
+**Learning** was reason two. I work as a backend engineer, and I knew what VPN was — conceptually. But I'd never actually built one. DHCP? Barely remembered it beyond the name. What actually happens when NAT runs twice? Couldn't have explained it clearly. I recently changed jobs too, and understanding a new company's infrastructure is just part of the job for a backend engineer. Building it hands-on felt like the fastest way to actually understand how these things work, not just what they're called.
 
 ## Where the Conversation Led
 
@@ -85,17 +85,19 @@ My MacBook connects to the secondary router's main network. That means from anyw
 
 ## The Networking Problem: Double NAT
 
-One router, one NAT. Two routers stacked — the secondary plugged into the primary — and NAT happens twice. The secondary router gets a private IP from the primary (192.168.219.107), and VPN traffic needs to navigate both layers to reach it:
+When I told Gemini I already had an ISP router at home, it flagged the double NAT situation right away. Obvious in hindsight, but not something I'd thought of on my own.
+
+One router, one NAT. Two routers stacked — the secondary plugged into the primary — and NAT happens twice. The secondary router gets a private IP from the primary (192.168.219.xxx), and VPN traffic needs to navigate both layers to reach it:
 
 ```mermaid
 graph LR
     A["Internet<br/>(Public IP)"]
     B["Primary Router<br/>(Translates Public → 192.168.219.x)"]
-    C["Secondary Router<br/>(192.168.219.107<br/>Translates 192.168.219.x → 192.168.0.x)"]
+    C["Secondary Router<br/>(192.168.219.xxx<br/>Translates 192.168.219.x → 192.168.0.x)"]
     D["iPhone<br/>(via VPN)"]
 
     A -->|UDP port 1194| B
-    B -->|UDP port 1194<br/>to 192.168.219.107| C
+    B -->|UDP port 1194<br/>to 192.168.219.xxx| C
     C -->|OpenVPN tunnel| D
 
     style A fill:#4a90e2
