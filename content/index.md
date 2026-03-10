@@ -2,4 +2,5 @@
 title: Home
 ---
 
-<script>window.location.replace("/en/")</script>
+<meta http-equiv="refresh" content="0; url=/en">
+<script>window.location.replace("/en")</script>
