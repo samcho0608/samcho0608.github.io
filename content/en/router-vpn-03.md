@@ -25,7 +25,9 @@ lang: en
 draft: false
 ---
 
-The LG router's USB port is blocked by ISP firmware. The Archer has no USB port. A standalone NAS felt like overkill. **MacBook is already sitting there** — so: MacBook becomes the file server and remote desktop.
+The VPN tunnel was live — now I needed something on the other end. Gemini first suggested attaching a USB hard drive to the LG router. I tried it, but the ISP firmware blocked it. Gemini explained that ISP routers commonly restrict USB storage for security reasons. The Archer has no USB port to begin with, and a standalone NAS felt like overkill. Gemini's next suggestion: use the **MacBook**.
+
+I'd originally only thought about SSH access. But Gemini suggested SMB for file sharing and VNC for screen control — both far easier to use from an iPhone than a terminal.
 
 Two goals, both over the VPN tunnel:
 1. **SMB file sharing** — access MacBook files from iPhone
@@ -37,10 +39,12 @@ macOS makes this easy.
 
 1. System Settings → General → Sharing
 2. File Sharing: enable it
-3. Check which user account to share from (the dropdown menu below)
-4. macOS will ask for a password re-entry (it does this for security-sensitive changes)
+3. Click the `i` icon to configure:
+   - Add folders to share, and set per-folder **user access and permissions** (Read Only or Read & Write)
+   - Under **Options**, check "Share files and folders using SMB" and check the macOS account to allow
+   - macOS will ask for a password re-entry — this stores a separate SMB password hash for the account
 
-That's it. The MacBook is now an SMB server on the network.
+When connecting from iPhone, the credentials are your **macOS account name + login password**.
 
 ## The Static IP Problem — and Private Wi-Fi Address
 
@@ -119,7 +123,7 @@ I went to Settings → General → Remote Management → Options and checked all
 
 Then: Computer Settings → Set VNC Password
 
-That password is what I'll enter on the iPhone to unlock screen control.
+This password is VNC-specific and separate from your macOS login password. You can also restrict access to specific macOS accounts or allow all users.
 
 ## VNC Client on iPhone
 
@@ -153,7 +157,7 @@ Here's what the whole setup looks like now:
 graph TB
     A["Internet"]
     B["LG U+ Router<br/>(Public IP)"]
-    C["TP-Link Archer C6<br/>(192.168.219.107)<br/>VPN Server"]
+    C["TP-Link Archer C6<br/>(192.168.219.xxx)<br/>VPN Server"]
     D["MacBook<br/>(192.168.0.107)<br/>SMB + VNC"]
     E["iPhone on LTE<br/>(via VPN)"]
     F["Matter Switch<br/>(Guest Network)"]
