@@ -83,6 +83,38 @@ The primary router is the ISP gateway. The secondary router plugs in via etherne
 
 My MacBook connects to the secondary router's main network. That means from anywhere with internet, I can VPN in and access my MacBook for file sharing and remote control.
 
+## The Concepts Gemini Walked Me Through
+
+Before any of the configuration made sense, Gemini covered some fundamentals. These kept coming up throughout the build — worth a quick read if you're new to home networking.
+
+**LAN / WAN**
+LAN (Local Area Network) is the network inside your home — the private side. WAN (Wide Area Network) is the internet — the public side. Your router sits at the boundary. Devices on your LAN talk to each other directly; anything going to the outside world passes through the router.
+
+**Public IP vs Private IP**
+Your ISP assigns your home one public IP — a globally unique address visible on the internet. Inside your router, devices get private IPs: addresses like `192.168.x.x` that only exist within your local network. My MacBook's IP is `192.168.0.107`, but that address means nothing to the internet. Traffic has to pass through the router to get anywhere.
+
+**MAC Address**
+A MAC address is a hardware identifier burned into a network interface (your Wi-Fi chip, Ethernet port, etc.). Unlike IP addresses, which change based on which network you're on, MAC addresses stay with the device. DHCP reservations use MAC addresses as the key: "always give this MAC this IP."
+
+**DHCP**
+DHCP is the protocol your router uses to automatically assign IP addresses to devices when they connect. Convenient, but the assigned IP can change on reconnect. For anything acting as a server, you need a fixed address — which is what DHCP address reservation is for.
+
+**NAT**
+NAT (Network Address Translation) is how your router lets multiple devices share one public IP. Outgoing traffic gets translated from private IP to public IP; incoming responses get translated back. The problem: NAT is a one-way door. External traffic can't reach inside devices unless you explicitly open a path — which is what port forwarding does.
+
+**Port Forwarding**
+A port forwarding rule tells the router: "any traffic arriving on this port, send it to this internal device." For a VPN server, that's "UDP port 1194 → the Archer C6." Without this, all incoming VPN traffic hits the router's NAT wall and gets silently dropped.
+
+**DDNS**
+ISPs rotate your public IP periodically — sometimes daily. DDNS (Dynamic DNS) keeps a domain name pointed at your current public IP regardless of changes. Register something like `foobar.tplinkdns.com`, and TP-Link's service automatically updates the DNS record whenever your IP changes. Now you always have a stable address to connect to.
+
+**VPN**
+VPN (Virtual Private Network) creates an encrypted tunnel between an external device and your home network. Once connected, the external device behaves as if it's on your LAN — it can reach local services directly. Connect your iPhone to the VPN from a coffee shop, and your MacBook looks like it's right next to you.
+
+---
+
+With those in place, the design makes sense. One thing I hadn't considered before Gemini pointed it out:
+
 ## The Networking Problem: Double NAT
 
 When I told Gemini I already had an ISP router at home, it flagged the double NAT situation right away. Obvious in hindsight, but not something I'd thought of on my own.
