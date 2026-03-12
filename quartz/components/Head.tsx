@@ -55,7 +55,7 @@ export default (() => {
 
         <meta name="og:site_name" content={cfg.pageTitle}></meta>
         <meta property="og:title" content={title} />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={fileData.dates?.created ? "article" : "website"} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
@@ -81,6 +81,80 @@ export default (() => {
             <meta property="twitter:url" content={socialUrl}></meta>
           </>
         )}
+
+        {cfg.baseUrl && fileData.slug !== "404" && (
+          <link rel="canonical" href={socialUrl} />
+        )}
+
+        {cfg.baseUrl &&
+          (() => {
+            const slug = fileData.slug ?? ""
+            const base = `https://${cfg.baseUrl}`
+            if (slug.startsWith("ko/")) {
+              const enSlug = slug.replace(/^ko\//, "")
+              return (
+                <>
+                  <link rel="alternate" hrefLang="ko" href={`${base}/${slug}`} />
+                  <link rel="alternate" hrefLang="en" href={`${base}/${enSlug}`} />
+                  <link rel="alternate" hrefLang="x-default" href={`${base}/${enSlug}`} />
+                </>
+              )
+            } else if (slug !== "index" && slug !== "404" && !slug.startsWith("tags/")) {
+              const koSlug = `ko/${slug}`
+              return (
+                <>
+                  <link rel="alternate" hrefLang="en" href={`${base}/${slug}`} />
+                  <link rel="alternate" hrefLang="ko" href={`${base}/${koSlug}`} />
+                  <link rel="alternate" hrefLang="x-default" href={`${base}/${slug}`} />
+                </>
+              )
+            }
+            return null
+          })()}
+
+        {(() => {
+          const base = `https://${cfg.baseUrl ?? "example.com"}`
+          const isArticle = fileData.dates?.created != null && fileData.slug !== "404"
+          if (isArticle) {
+            const jsonLd = {
+              "@context": "https://schema.org",
+              "@type": "Article",
+              headline: title,
+              description,
+              url: socialUrl,
+              datePublished: fileData.dates!.created.toISOString(),
+              dateModified: (fileData.dates!.modified ?? fileData.dates!.created).toISOString(),
+              author: { "@type": "Person", name: cfg.pageTitle, url: base },
+              publisher: {
+                "@type": "Organization",
+                name: cfg.pageTitle,
+                logo: { "@type": "ImageObject", url: `${base}/static/icon.png` },
+              },
+              image: ogImageDefaultPath,
+            }
+            return (
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+              />
+            )
+          }
+          if (fileData.slug === "index") {
+            const jsonLd = {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: cfg.pageTitle,
+              url: base,
+            }
+            return (
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+              />
+            )
+          }
+          return null
+        })()}
 
         <link rel="icon" href={iconPath} />
         <meta name="description" content={description} />
