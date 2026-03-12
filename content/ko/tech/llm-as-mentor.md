@@ -43,6 +43,12 @@ Gemini는 이 질문에 설정 방법이 아니라 두 옵션이 만들어내는
 
 그 설명을 들은 뒤 선택지가 눈에 들어왔다. 공용 와이파이 보안이 목적이라면 후자가 맞고, 집 파일 접근만 필요하면 전자가 적합하다. 이건 가이드를 따라가는 게 아니라 내가 판단한 거다.
 
+<!-- TODO: OpenVPN 클라이언트 액세스 옵션 개념 설명 Gemini 대화 스크린샷 → images/llm-as-mentor/gemini-pattern1.png -->
+<figure>
+  <img src="images/llm-as-mentor/gemini-pattern1.png" alt="Gemini에게 개념을 먼저 물어보는 대화 화면" />
+  <figcaption>설정 방법이 아닌 "차이가 뭐야?"를 먼저 물었다. 트래픽 흐름 기준으로 두 옵션의 차이를 설명해줬다.</figcaption>
+</figure>
+
 이 차이가 중요하다. **개념을 이해한 상태에서 설정하는 것**과 **설정 순서만 따라하는 것**은 결과가 같아 보여도 나중에 완전히 다르게 된다.
 
 ---
@@ -64,6 +70,12 @@ Gemini는 바로 `remote` 줄을 짚었다. `192.168.219.xxx`이 사설 IP이고
 
 내가 설정 과정에서 이미 이중 NAT를 다뤘고 포트 포워딩도 완료했다는 **전체 맥락을 Gemini가 알고 있었기 때문에** 가능한 진단이었다. 같은 에러라도 내 상황에 맞는 원인을 바로 짚어줬다.
 
+<!-- TODO: .ovpn 파일 내용을 붙여넣고 Gemini가 원인을 짚어준 대화 스크린샷 → images/llm-as-mentor/gemini-pattern2-debug.png -->
+<figure>
+  <img src="images/llm-as-mentor/gemini-pattern2-debug.png" alt="Gemini에게 .ovpn 파일 내용을 붙여넣고 트러블슈팅하는 대화 화면" />
+  <figcaption>.ovpn 파일 전체를 붙여넣자 Gemini가 바로 remote 줄의 사설 IP를 짚어줬다. 에러 메시지만 검색했다면 찾기 힘든 원인이었다.</figcaption>
+</figure>
+
 맥북 IP 고정에서 만난 문제도 마찬가지였다. 클라이언트 목록에 맥북으로 보이는 항목이 두 개 떴는데, 예약한 IP가 잡히지 않는다고 증상을 그대로 설명했다. Gemini가 곧장 **Private Wi-Fi Address** 기능을 원인으로 짚어줬다. 내가 그 기능의 존재를 몰랐더라도, 증상만 정확히 설명하면 됐다.
 
 구글링과 본질적으로 다른 점이 여기에 있다. 구글은 에러 메시지에 해당하는 문서를 보여주고, 나는 그 중에서 내 상황에 맞는 걸 찾아야 한다. LLM은 내 상황을 이미 알고 있어서 그 필터링이 필요 없다.
@@ -81,6 +93,12 @@ Gemini가 제안한 것 중 하나가 맥북 홈서버였다. VPN 터널이 이�
 그 제안이 없었다면 SMB 파일 공유를 생각했을까? 아마 하지 않았을 것이다. VPN 구축이 목표였고, 거기서 멈췄을 것이다.
 
 이 질문이 반복됐다. 파일 공유 성공 → "원격 데스크톱도 되나?" → VNC 설정. 각 단계가 이전 단계 위에 자연스럽게 쌓였다.
+
+<!-- TODO: "여기서 더 해볼 수 있는 게 있을까?" 질문에 맥북 홈서버를 제안해준 Gemini 대화 스크린샷 → images/llm-as-mentor/gemini-pattern3-expand.png -->
+<figure>
+  <img src="images/llm-as-mentor/gemini-pattern3-expand.png" alt="Gemini에게 다음 단계를 묻는 대화 화면" />
+  <figcaption>"여기서 더 해볼 수 있는 게 있을까?" 한 줄 질문이 SMB 파일 서버와 VNC 원격 제어로 이어졌다.</figcaption>
+</figure>
 
 이게 멘토와 대화하는 것과 비슷하다. 내가 완성한 것이 다음 무엇을 배울 수 있는 발판인지를 알려주는 것. 구글은 이걸 해줄 수 없다. 내가 검색어를 알아야 검색이 가능하기 때문이다.
 
@@ -115,6 +133,12 @@ Gemini가 제안한 것 중 하나가 맥북 홈서버였다. VPN 터널이 이�
 ## 한 가지 주의
 
 LLM이 항상 맞지는 않는다. 이번 작업에서도 LG U+ 공유기의 USB 포트를 통한 NAS 기능 활용을 제안받았는데, 실제로 해보니 통신사 공유기는 해당 기능이 소프트웨어적으로 막혀 있었다. Gemini도 처음에 이걸 확인하지 않고 제안했다.
+
+<!-- TODO: LG 공유기 USB NAS 기능이 막혀 있는 화면 or Gemini가 잘못된 제안을 한 대화 스크린샷 → images/llm-as-mentor/gemini-wrong-suggestion.png -->
+<figure>
+  <img src="images/llm-as-mentor/gemini-wrong-suggestion.png" alt="LLM이 틀린 제안을 한 사례 화면" />
+  <figcaption>LG U+ 공유기 USB NAS 기능은 통신사 정책으로 막혀 있었다. Gemini가 확인 없이 제안했고, 직접 해봐야만 알 수 있었다.</figcaption>
+</figure>
 
 실제로 해보고 확인하는 것이 빠진다면 그냥 그럴듯한 이야기만 듣는 셈이 된다. LLM이 멘토 역할을 잘 하는 이유 중 하나는 내가 직접 실행하고, 결과를 다시 가져오고, 거기서 이어가는 **실습과 피드백의 루프**가 있기 때문이다.
 

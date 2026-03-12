@@ -52,6 +52,12 @@ VPN 터널이 뚫렸으니 그 끝에 뭔가를 붙여야 한다. Gemini가 먼�
 
 아이폰에서 접속할 때 사용하는 자격증명은 **macOS 계정 이름 + 로그인 암호**다.
 
+<!-- TODO: macOS 시스템 설정 → 공유 → 파일 공유 화면 → images/router-vpn-03/smb-sharing.png -->
+<figure>
+  <img src="images/router-vpn-03/smb-sharing.png" alt="macOS 파일 공유 설정 화면" />
+  <figcaption>시스템 설정 → 일반 → 공유. 파일 공유 스위치를 켜고, i 아이콘에서 공유 폴더와 계정을 설정한다.</figcaption>
+</figure>
+
 ## 2. 맥북 IP 고정 — 그리고 예상치 못한 문제
 
 외부에서 접속할 때 맥북 주소가 매번 바뀌면 불편하다. Archer C6에서 맥북의 IP를 고정해줘야 한다.
@@ -77,6 +83,12 @@ VPN 터널이 뚫렸으니 그 끝에 뭔가를 붙여야 한다. Gemini가 먼�
 
 와이파이를 껐다 켜면 `en0` 실제 주소로 접속하고, 이번엔 예약한 `192.168.0.107`이 정상적으로 할당됐다.
 
+<!-- TODO: macOS Wi-Fi 설정 → 비공개 Wi-Fi 주소 옵션 화면 → images/router-vpn-03/private-wifi-address.png -->
+<figure>
+  <img src="images/router-vpn-03/private-wifi-address.png" alt="macOS 비공개 Wi-Fi 주소 설정 화면" />
+  <figcaption>Wi-Fi 설정 → 네트워크 세부사항 → Wi-Fi 탭. 비공개 Wi-Fi 주소를 '끔'으로 바꾸면 실제 MAC 주소로 접속하게 된다. 집 네트워크에서만 꺼두는 것이 좋다.</figcaption>
+</figure>
+
 > **참고**: 이 설정은 네트워크별로 다르게 적용된다. 집 와이파이에서만 끄고, 카페나 공용 와이파이에서는 여전히 켜두는 게 맞다.
 
 ## 3. 아이폰에서 파일 접근 테스트
@@ -84,6 +96,12 @@ VPN 터널이 뚫렸으니 그 끝에 뭔가를 붙여야 한다. Gemini가 먼�
 아이폰의 OpenVPN을 켜서 VPN 터널로 집 네트워크에 들어온 뒤, **파일 앱 → 서버에 연결 → `smb://192.168.0.107`** 입력 후 맥북 계정으로 로그인.
 
 맥북에서 공유로 지정한 폴더가 아이폰 파일 앱에 나타났다. 외부에서도 마찬가지였다 — LTE 상태에서 VPN을 켜면 집 맥북 파일에 접근할 수 있다.
+
+<!-- TODO: 아이폰 파일 앱에서 SMB 접속 화면 → images/router-vpn-03/smb-files-app.png -->
+<figure>
+  <img src="images/router-vpn-03/smb-files-app.png" alt="아이폰 파일 앱 SMB 연결 화면" />
+  <figcaption>아이폰 파일 앱에서 smb://192.168.0.107 로 접속한 모습. 맥북에서 공유로 지정한 폴더가 그대로 보인다.</figcaption>
+</figure>
 
 ---
 
@@ -108,6 +126,12 @@ App Store에서 **VNC Viewer** (RealVNC 제공) 설치 후:
 3. VNC 암호 입력 → 맥북 화면이 아이폰에 나타난다.
 
 마찬가지로 LTE 상태에서도 VPN을 켜고 접속하면 동작한다.
+
+<!-- TODO: VNC Viewer 앱에서 맥북 화면이 표시된 모습 → images/router-vpn-03/vnc-viewer.png -->
+<figure>
+  <img src="images/router-vpn-03/vnc-viewer.png" alt="VNC Viewer로 맥북 원격 접속 화면" />
+  <figcaption>아이폰 VNC Viewer 앱에서 맥북 화면이 그대로 보이는 모습. LTE 환경에서도 VPN을 켜면 집 맥북을 원격 제어할 수 있다.</figcaption>
+</figure>
 
 ### 맥북 잠자기 방지
 

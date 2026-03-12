@@ -193,6 +193,36 @@ footer {
   }
 }
 
+/* ── 이미지 / 캡션 ── */
+article figure {
+  margin: 1.8rem 0;
+  text-align: center;
+}
+
+article figure img {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--surfaceBorder);
+  box-shadow: var(--softShadow);
+}
+
+article figure figcaption {
+  margin-top: 0.55rem;
+  font-size: 0.83rem;
+  color: var(--gray);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+[saved-theme="dark"] article figure img {
+  border-color: var(--surfaceBorder);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+[saved-theme="dark"] article figure figcaption {
+  color: #94a3b8;
+}
+
 @media all and (max-width: 800px) {
   .page > #quartz-body {
     row-gap: 0.8rem;

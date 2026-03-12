@@ -41,6 +41,12 @@ Archer C6 관리 페이지(`tplinkwifi.net` 또는 `192.168.0.1`)에 접속한�
 
 **고급 → 네트워크 → Dynamic DNS**로 이동해 TP-Link를 서비스 제공자로 선택하고, TP-Link ID로 로그인한다. 원하는 이름을 입력하면 `foobar.tplinkdns.com` 형태의 무료 도메인이 생성된다.
 
+<!-- TODO: Archer C6 관리 페이지 DDNS 설정 화면 → images/router-vpn-02/ddns-settings.png -->
+<figure>
+  <img src="images/router-vpn-02/ddns-settings.png" alt="Archer C6 DDNS 설정 화면" />
+  <figcaption>고급 → 네트워크 → Dynamic DNS. TP-Link를 선택하고 원하는 이름을 입력하면 tplinkdns.com 도메인이 생성된다.</figcaption>
+</figure>
+
 이걸 먼저 설정하는 이유가 있다. 곧 설명할 `.ovpn` 파일 안에 이 이름이 들어가야 하는데, 나중에 생성하면 파일을 다시 내보내야 하는 번거로움이 생긴다.
 
 ## 2. OpenVPN 서버 활성화
@@ -53,6 +59,12 @@ Archer C6 관리 페이지(`tplinkwifi.net` 또는 `192.168.0.1`)에 접속한�
 - 생성 완료 후 **구성 내보내기(Export Configuration)** 클릭 → `.ovpn` 파일 저장
 
 내보낸 파일은 아이폰에 설치할 클라이언트 설정이며, 인증서/서버 주소/포트 정보가 모두 포함된다.
+
+<!-- TODO: Archer C6 OpenVPN 서버 설정 화면 → images/router-vpn-02/openvpn-server.png -->
+<figure>
+  <img src="images/router-vpn-02/openvpn-server.png" alt="Archer C6 OpenVPN 서버 설정 화면" />
+  <figcaption>고급 → VPN 서버 → OpenVPN. 인증서 생성 후 구성 내보내기 버튼으로 .ovpn 파일을 저장한다.</figcaption>
+</figure>
 
 설정 항목 중 **클라이언트 액세스**는 두 가지 옵션이 있다. "홈 네트워크로 제한"은 집 내부 기기 접근만 VPN을 거치고, 일반 인터넷은 기존 LTE/Wi-Fi를 그대로 쓴다. "인터넷 & 홈 네트워크"는 모든 트래픽이 집을 경유한다.
 
@@ -73,11 +85,23 @@ Archer C6 관리 페이지(`tplinkwifi.net` 또는 `192.168.0.1`)에 접속한�
 | 내부 IP | Archer C6의 WAN IP (예: `192.168.219.xxx`) |
 | 내부 포트 | 1194 |
 
+<!-- TODO: LG 공유기 포트 포워딩 설정 화면 → images/router-vpn-02/port-forwarding.png -->
+<figure>
+  <img src="images/router-vpn-02/port-forwarding.png" alt="LG U+ 공유기 포트 포워딩 설정 화면" />
+  <figcaption>LG U+ 공유기 관리 페이지의 NAT 설정 → 포트 포워딩. UDP 1194번 포트를 Archer C6 WAN IP로 넘긴다.</figcaption>
+</figure>
+
 ## 4. 아이폰에 OpenVPN Connect 설치
 
 App Store에서 **OpenVPN Connect** 설치 후, `.ovpn` 파일을 아이폰으로 전송한다 (카카오톡 나에게 보내기, 이메일, AirDrop 등).
 
 파일을 탭하면 OpenVPN으로 열기 옵션이 뜬다. ADD → 허용 → 스위치를 켜서 연결.
+
+<!-- TODO: 아이폰 OpenVPN Connect 앱 화면 → images/router-vpn-02/openvpn-connect-app.png -->
+<figure>
+  <img src="images/router-vpn-02/openvpn-connect-app.png" alt="아이폰 OpenVPN Connect 앱 연결 화면" />
+  <figcaption>OpenVPN Connect 앱에서 .ovpn 파일을 불러온 뒤 스위치를 켜서 연결을 시도하는 화면.</figcaption>
+</figure>
 
 > **테스트는 반드시 LTE/5G 상태에서**: 집 와이파이에서는 VPN이 제대로 작동하는지 확인할 수 없다.
 
@@ -86,6 +110,12 @@ App Store에서 **OpenVPN Connect** 설치 후, `.ovpn` 파일을 아이폰으�
 ## 5. Connection Timeout — 그리고 원인
 
 와이파이를 끄고 LTE 상태에서 연결을 시도했다. 결과는 `Connection Timeout`.
+
+<!-- TODO: Connection Timeout 에러 화면 스크린샷 → images/router-vpn-02/connection-timeout.png -->
+<figure>
+  <img src="images/router-vpn-02/connection-timeout.png" alt="OpenVPN Connection Timeout 에러 화면" />
+  <figcaption>반갑지 않은 첫 화면. Connection Timeout. 뭐가 문제인지 전혀 감이 오지 않았다.</figcaption>
+</figure>
 
 `.ovpn` 파일 내용을 그대로 Gemini에 붙여넣었다. 원인은 바로 나왔다:
 
@@ -121,6 +151,12 @@ remote foobar.tplinkdns.com 1194
 ```
 
 수정한 파일을 아이폰에 다시 등록하고 (기존 프로필 삭제 후 ADD), LTE 상태에서 재시도.
+
+<!-- TODO: VPN 연결 성공 화면 스크린샷 → images/router-vpn-02/vpn-connected.png -->
+<figure>
+  <img src="images/router-vpn-02/vpn-connected.png" alt="VPN 연결 성공 화면" />
+  <figcaption>DDNS 주소로 바꾸고 나서 재시도했더니 바로 연결됐다. 아이폰 상단에 VPN 배지가 표시된다.</figcaption>
+</figure>
 
 ```mermaid
 graph LR

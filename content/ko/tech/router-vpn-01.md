@@ -38,6 +38,12 @@ draft: false
 
 그러다 장롱 속에 잠들어 있던 **공유기 공기계**가 떠올랐다. 이전 집은 공유기를 직접 사야 했는데, 지금 자취방은 주 라우터가 기본 제공되어서 그냥 넣어뒀던 것이다.
 
+<!-- TODO: 공기계 Archer C6 사진 → images/router-vpn-01/archer-c6.jpg -->
+<figure>
+  <img src="images/router-vpn-01/archer-c6.jpg" alt="장롱에서 꺼낸 TP-Link Archer C6" />
+  <figcaption>오랫동안 장롱에서 잠들어 있던 TP-Link Archer C6. 이게 VPN 서버가 될 줄이야.</figcaption>
+</figure>
+
 ## 왜 VPN 서버를 선택했나
 
 이 공유기로 뭘 할 수 있을지 Gemini에게 물어봤다. 나온 선택지는 크게 네 가지였다: 와이파이 확장기, 무선 랜카드 대용, 스위칭 허브, 그리고 VPN 서버. 앞의 셋은 내 상황에 필요가 없었다.
@@ -62,7 +68,13 @@ VPN 서버만 남았는데, Gemini가 한 가지를 덧붙였다. VPN 라우터�
 
 VPN이 되면 외부에서 집 네트워크에 접속할 수 있다. 접속할 수 있으면 맥북에 파일도 쌓고 화면도 제어할 수 있다. 부 라우터에 게스트 네트워크를 만들면 IoT 기기들을 맥북과 분리할 수 있다.
 
-그렇게 대화 끝에 나온 구조가 이렇다:
+그렇게 대화 끝에 나온 구조가 이렇다.
+
+<!-- TODO: 실제 기기 배치 사진(LG 공유기 + Archer C6 + 맥북) → images/router-vpn-01/device-setup.jpg -->
+<figure>
+  <img src="images/router-vpn-01/device-setup.jpg" alt="실제 자취방 기기 배치" />
+  <figcaption>LG U+ 공유기(좌), Archer C6(우), 그리고 홈서버로 쓸 맥북. 이 세 개가 전부다.</figcaption>
+</figure>
 
 ```mermaid
 graph TD
