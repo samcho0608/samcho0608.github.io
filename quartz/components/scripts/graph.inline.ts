@@ -68,6 +68,14 @@ type TweenNode = {
   stop: () => void
 }
 
+function normalizeLanguage(lang?: string) {
+  return lang?.toLowerCase() ?? "en"
+}
+
+function isSameLanguage(page: ContentDetails | undefined, current: ContentDetails | undefined) {
+  return normalizeLanguage(page?.lang) === normalizeLanguage(current?.lang)
+}
+
 async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   const slug = simplifySlug(fullSlug)
   const visited = getVisited()
@@ -95,16 +103,12 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       v,
     ]),
   )
+  const currentPage = allData.get(slug)
 
-  // Filter nodes by language: KO pages show KO nodes, everything else shows EN nodes.
-  // Tag nodes and the index page are kept in both contexts.
-  const isKoPage = slug.startsWith("ko/")
   const data = new Map<SimpleSlug, ContentDetails>()
   for (const [key, value] of allData) {
-    const isKoNode = key.startsWith("ko/")
     const isTag = key.startsWith("tags/")
-    const isIndex = key === "index"
-    if (isTag || isIndex || (isKoPage ? isKoNode : !isKoNode)) {
+    if (isTag || isSameLanguage(value, currentPage) || key === slug) {
       data.set(key, value)
     }
   }
