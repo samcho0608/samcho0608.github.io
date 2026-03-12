@@ -19,7 +19,7 @@ import * as Plugin from "./quartz/plugins"
 const config: QuartzConfig = {
   configuration: {
     // ── Branding ────────────────────────────────────────────
-    pageTitle: "My Digital Garden",          // CHANGE THIS
+    pageTitle: "Cho Me the Code",            // CHANGE THIS
     pageTitleSuffix: "",                      // Appended to every page <title>
 
     // ── Deployment ──────────────────────────────────────────

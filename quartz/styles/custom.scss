@@ -152,6 +152,173 @@ footer {
   padding: 1rem 0;
 }
 
+article.resume-page {
+  padding-top: 1.5rem;
+}
+
+article.resume-page > h1:first-child {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+article.resume-page > p:nth-of-type(1) {
+  margin-top: 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gray);
+}
+
+article.resume-page > p:nth-of-type(2) {
+  margin-top: 0.55rem;
+  font-size: 0.98rem;
+  color: var(--darkgray);
+}
+
+article.resume-page > p:nth-of-type(3) {
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+  font-size: 1.03rem;
+  line-height: 1.9;
+}
+
+article.resume-page table {
+  width: 100%;
+  margin: 1.35rem 0 2.25rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--surfaceBorder);
+  border-radius: 18px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--surface) 92%, #f8fbff 8%);
+}
+
+article.resume-page table thead,
+article.resume-page table th {
+  background: color-mix(in srgb, var(--secondary) 10%, var(--surface) 90%);
+}
+
+article.resume-page table th,
+article.resume-page table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--surfaceBorder);
+  text-align: left;
+  vertical-align: top;
+}
+
+article.resume-page table tr:last-child td {
+  border-bottom: 0;
+}
+
+article.resume-page table th:first-child,
+article.resume-page table td:first-child {
+  width: 28%;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+article.resume-page > h2 {
+  margin-top: 2.4rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--surfaceBorder);
+  font-size: 1.55rem;
+  color: var(--dark);
+  letter-spacing: -0.02em;
+}
+
+article.resume-page > h2 + ul {
+  margin-top: 0.8rem;
+}
+
+article.resume-page > h2 + ul > li {
+  margin-bottom: 0.8rem;
+}
+
+article.resume-page h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.15rem;
+  font-size: 1.3rem;
+  line-height: 1.25;
+}
+
+article.resume-page h3 + p {
+  margin-top: 0.25rem;
+  margin-bottom: 0.95rem;
+  color: var(--gray);
+  font-weight: 600;
+  font-size: 0.96rem;
+}
+
+article.resume-page h4 {
+  margin-top: 1.4rem;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--surfaceBorder) 78%, transparent);
+  font-size: 1rem;
+  text-transform: none;
+  color: var(--dark);
+}
+
+article.resume-page h4 + ul {
+  margin-top: 0.35rem;
+}
+
+article.resume-page ul {
+  padding-left: 1.35rem;
+}
+
+article.resume-page ul li {
+  margin-bottom: 0.4rem;
+}
+
+article.resume-page ul ul {
+  margin-top: 0.35rem;
+}
+
+article.resume-page ul ul > li {
+  color: var(--darkgray);
+}
+
+article.resume-page .resume-entry {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1.4rem;
+  margin: 0.85rem 0 1.65rem;
+}
+
+article.resume-page .resume-entry-meta p,
+article.resume-page .resume-entry-body p {
+  margin: 0;
+}
+
+article.resume-page .resume-entry-org {
+  font-weight: 700;
+  color: var(--dark);
+}
+
+article.resume-page .resume-entry-date {
+  margin-top: 0.3rem !important;
+  font-size: 0.95rem;
+  color: var(--gray);
+}
+
+article.resume-page .resume-entry-body ul {
+  margin: 0;
+}
+
+[saved-theme="dark"] article.resume-page table,
+[saved-theme="dark"] article.resume-page table thead,
+[saved-theme="dark"] article.resume-page table th {
+  background: color-mix(in srgb, var(--surface) 90%, #1d3352 10%);
+  border-color: var(--surfaceBorder);
+}
+
+[saved-theme="dark"] article.resume-page > h2 {
+  color: var(--dark);
+}
+
 [saved-theme="dark"] .page-title a,
 [saved-theme="dark"] .article-title,
 [saved-theme="dark"] h1,
@@ -211,6 +378,16 @@ footer {
   .center article {
     border-radius: 18px;
     padding: 1.4rem 1.05rem;
+  }
+
+  article.resume-page table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  article.resume-page .resume-entry {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
   }
 
   li.section-li > .section {
