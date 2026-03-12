@@ -5,12 +5,48 @@ import { googleFontHref, googleFontSubsetHref } from "../util/theme"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { unescapeHTML } from "../util/escape"
 import { CustomOgImagesEmitterName } from "../plugins/emitters/ogImage"
+
+function getAlternateLanguageLinks({
+  baseUrl,
+  slug,
+  lang,
+  allFiles,
+}: Pick<QuartzComponentProps, "allFiles"> & {
+  baseUrl?: string
+  slug?: FullSlug
+  lang?: string
+}) {
+  if (!baseUrl || !slug || !lang) return null
+
+  const base = `https://${baseUrl}`
+  const counterpartSlug = (lang === "ko" ? slug.replace(/^ko\//, "") : `ko/${slug}`) as FullSlug
+  const counterpartLang = lang === "ko" ? "en" : "ko"
+  const counterpartFile = allFiles.find(
+    (f) => f.slug === counterpartSlug && f.frontmatter?.lang === counterpartLang,
+  )
+
+  if (!counterpartFile) return null
+
+  const currentUrl = `${base}/${slug}`
+  const counterpartUrl = `${base}/${counterpartSlug}`
+  const defaultUrl = lang === "en" ? currentUrl : counterpartUrl
+
+  return (
+    <>
+      <link rel="alternate" hrefLang={lang} href={currentUrl} />
+      <link rel="alternate" hrefLang={counterpartLang} href={counterpartUrl} />
+      <link rel="alternate" hrefLang="x-default" href={defaultUrl} />
+    </>
+  )
+}
+
 export default (() => {
   const Head: QuartzComponent = ({
     cfg,
     fileData,
     externalResources,
     ctx,
+    allFiles,
   }: QuartzComponentProps) => {
     const titleSuffix = cfg.pageTitleSuffix ?? ""
     const title =
@@ -82,35 +118,14 @@ export default (() => {
           </>
         )}
 
-        {cfg.baseUrl && fileData.slug !== "404" && (
-          <link rel="canonical" href={socialUrl} />
-        )}
+        {cfg.baseUrl && fileData.slug !== "404" && <link rel="canonical" href={socialUrl} />}
 
-        {cfg.baseUrl &&
-          (() => {
-            const slug = fileData.slug ?? ""
-            const base = `https://${cfg.baseUrl}`
-            if (slug.startsWith("ko/")) {
-              const enSlug = slug.replace(/^ko\//, "")
-              return (
-                <>
-                  <link rel="alternate" hrefLang="ko" href={`${base}/${slug}`} />
-                  <link rel="alternate" hrefLang="en" href={`${base}/${enSlug}`} />
-                  <link rel="alternate" hrefLang="x-default" href={`${base}/${enSlug}`} />
-                </>
-              )
-            } else if (slug !== "index" && slug !== "404" && !slug.startsWith("tags/")) {
-              const koSlug = `ko/${slug}`
-              return (
-                <>
-                  <link rel="alternate" hrefLang="en" href={`${base}/${slug}`} />
-                  <link rel="alternate" hrefLang="ko" href={`${base}/${koSlug}`} />
-                  <link rel="alternate" hrefLang="x-default" href={`${base}/${slug}`} />
-                </>
-              )
-            }
-            return null
-          })()}
+        {getAlternateLanguageLinks({
+          baseUrl: cfg.baseUrl,
+          slug: fileData.slug,
+          lang: fileData.frontmatter?.lang,
+          allFiles,
+        })}
 
         {(() => {
           const base = `https://${cfg.baseUrl ?? "example.com"}`
