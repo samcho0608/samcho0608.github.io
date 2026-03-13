@@ -157,6 +157,7 @@ function createFolderNode(
 async function setupExplorer(currentSlug: FullSlug) {
   const allExplorers = document.querySelectorAll("div.explorer") as NodeListOf<HTMLElement>
   const isKoPage = currentSlug === "ko" || currentSlug.startsWith("ko/")
+  const isEnPage = currentSlug === "en" || currentSlug.startsWith("en/")
 
   for (const explorer of allExplorers) {
     const dataFns = JSON.parse(explorer.dataset.dataFns || "{}")
@@ -181,15 +182,23 @@ async function setupExplorer(currentSlug: FullSlug) {
     const entries = [...Object.entries(data)] as [FullSlug, ContentDetails][]
     const languageEntries = entries.filter(([slug]) => {
       const isKoNode = slug === "ko/index" || slug.startsWith("ko/")
-      return isKoPage ? isKoNode : !isKoNode
+      const isEnNode = slug === "en/index" || slug.startsWith("en/")
+      if (isKoPage) return isKoNode
+      if (isEnPage) return isEnNode
+      return false
     })
     const trie = FileTrieNode.fromEntries(languageEntries)
 
-    // Treat ko/index as the KO homepage root in explorer (not a visible top-level folder).
+    // Treat ko/index and en/index as language homepage roots in explorer (not visible top-level folders).
     if (isKoPage) {
       const koRoot = trie.children.find((child) => child.isFolder && child.slugSegment === "ko")
       if (koRoot) {
         trie.children = koRoot.children
+      }
+    } else if (isEnPage) {
+      const enRoot = trie.children.find((child) => child.isFolder && child.slugSegment === "en")
+      if (enRoot) {
+        trie.children = enRoot.children
       }
     }
 

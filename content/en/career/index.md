@@ -8,6 +8,8 @@ tags:
   - backend
 lang: en
 draft: false
+aliases:
+  - career/index
 ---
 
 This section collects the public-facing version of my professional background.
@@ -25,7 +27,7 @@ I’m a senior backend engineer focused on systems that need to stay reliable un
 
 ## Start here
 
-- [[career/resume|Resume]]
+- [[en/career/resume|Resume]]
 
 ## Highlights
 

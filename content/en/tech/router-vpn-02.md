@@ -24,6 +24,8 @@ series: "home-infra"
 series_order: 2
 lang: en
 draft: false
+aliases:
+  - tech/router-vpn-02
 ---
 
 ## DDNS First

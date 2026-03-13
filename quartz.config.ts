@@ -44,6 +44,7 @@ const config: QuartzConfig = {
       "templates",      // Obsidian templates folder
       ".obsidian",      // Obsidian config folder
       "drafts",         // Drafts you're not ready to publish
+      "CLAUDE.md",      // Claude Code instructions — not for publishing
     ],
 
     defaultDateType: "created",  // "created" | "modified" | "published"

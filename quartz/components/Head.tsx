@@ -19,7 +19,11 @@ function getAlternateLanguageLinks({
   if (!baseUrl || !slug || !lang) return null
 
   const base = `https://${baseUrl}`
-  const counterpartSlug = (lang === "ko" ? slug.replace(/^ko\//, "") : `ko/${slug}`) as FullSlug
+  const counterpartSlug = (
+    lang === "ko"
+      ? `en/${slug.replace(/^ko\//, "")}`
+      : `ko/${slug.replace(/^en\//, "")}`
+  ) as FullSlug
   const counterpartLang = lang === "ko" ? "en" : "ko"
   const counterpartFile = allFiles.find(
     (f) => f.slug === counterpartSlug && f.frontmatter?.lang === counterpartLang,
