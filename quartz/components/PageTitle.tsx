@@ -32,6 +32,9 @@ PageTitle.css = `
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .page-title a {
+    white-space: nowrap;
+  }
 }
 `
 
