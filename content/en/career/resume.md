@@ -10,6 +10,8 @@ cssclasses:
   - resume-page
 lang: en
 draft: false
+aliases:
+  - career/resume
 ---
 
 # Sam Cho

@@ -21,6 +21,8 @@ series: "home-infra"
 series_order: 1
 lang: en
 draft: false
+aliases:
+  - tech/router-vpn-01
 ---
 
 ## It Started With a YouTube Video

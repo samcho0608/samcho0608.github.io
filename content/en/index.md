@@ -1,6 +1,8 @@
 ---
 title: Cho Me the Code
 lang: en
+aliases:
+  - index
 ---
 
 > "Talk is cheap. Show me the code."
@@ -16,8 +18,8 @@ I’m Sam Cho, a senior backend engineer currently working on the high-availabil
 
 ## Career
 
-- [[career/index|Career hub]]
-- [[career/resume|Resume]]
+- [[en/career/index|Career hub]]
+- [[en/career/resume|Resume]]
 - [LinkedIn](https://www.linkedin.com/in/%EC%84%B1%EB%AF%BC-%EC%A1%B0-17a757250/)
 - [GitHub](https://github.com/samcho0608)
 
@@ -31,5 +33,5 @@ I’m Sam Cho, a senior backend engineer currently working on the high-availabil
 
 ## Recent writing
 
-- [[tech/llm-as-mentor|Using LLM as a Mentor, Not a Search Engine]]
-- [[tech/router-vpn-01|Building a home VPN and remote access setup]]
+- [[en/tech/llm-as-mentor|Using LLM as a Mentor, Not a Search Engine]]
+- [[en/tech/router-vpn-01|Building a home VPN and remote access setup]]

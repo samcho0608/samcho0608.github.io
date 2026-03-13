@@ -23,6 +23,8 @@ series: "home-infra"
 series_order: 3
 lang: en
 draft: false
+aliases:
+  - tech/router-vpn-03
 ---
 
 The VPN tunnel was live — now I needed something on the other end. Gemini first suggested attaching a USB hard drive to the LG router. I tried it, but the ISP firmware blocked it. Gemini explained that ISP routers commonly restrict USB storage for security reasons. The Archer has no USB port to begin with, and a standalone NAS felt like overkill. Gemini's next suggestion: use the **MacBook**.

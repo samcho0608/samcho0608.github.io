@@ -14,6 +14,8 @@ tags:
   - tutorial
 lang: en
 draft: false
+aliases:
+  - tech/llm-as-mentor
 ---
 
 ## The Setup
