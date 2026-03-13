@@ -10,6 +10,7 @@ export const sharedPageComponents: SharedLayout = {
       component: Component.SeriesNav(),
       condition: (page) => !!page.fileData.frontmatter?.series,
     }),
+    Component.LocaleRedirect(),
   ],
   footer: Component.Footer({
     links: {
@@ -19,16 +20,13 @@ export const sharedPageComponents: SharedLayout = {
   }),
 }
 
-// EN explorer: show root-level content only (tech/ folder + EN posts)
-// Excludes ko/, tags/, en/ redirect, and the root index (accessed via PageTitle)
+// EN explorer: show only en/ subtree (en/tech/ folder + EN posts)
+// Excludes en/index (accessed via PageTitle)
 const enExplorer = Component.Explorer({
   filterFn: (node) => {
     const slug = node.slug
-    if (slug === "ko" || slug.startsWith("ko/")) return false
-    if (slug === "tags" || slug.startsWith("tags/")) return false
-    if (slug === "en" || slug.startsWith("en/")) return false
-    if (slug === "index") return false
-    return true
+    if (slug === "en/index") return false
+    return slug === "en" || slug.startsWith("en/")
   },
 })
 
@@ -47,7 +45,10 @@ export const defaultContentPageLayout: PageLayout = {
   beforeBody: [
     Component.ConditionalRender({
       component: Component.Breadcrumbs(),
-      condition: (page) => page.fileData.slug !== "index" && page.fileData.slug !== "ko/index",
+      condition: (page) =>
+        page.fileData.slug !== "index" &&
+        page.fileData.slug !== "en/index" &&
+        page.fileData.slug !== "ko/index",
     }),
     Component.ArticleTitle(),
     Component.ConditionalRender({
@@ -72,7 +73,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ConditionalRender({
       component: enExplorer,
-      condition: (page) => !page.fileData.slug?.startsWith("ko/"),
+      condition: (page) => !!page.fileData.slug?.startsWith("en/"),
     }),
     Component.ConditionalRender({
       component: koExplorer,
@@ -91,7 +92,10 @@ export const defaultListPageLayout: PageLayout = {
   beforeBody: [
     Component.ConditionalRender({
       component: Component.Breadcrumbs(),
-      condition: (page) => page.fileData.slug !== "index" && page.fileData.slug !== "ko/index",
+      condition: (page) =>
+        page.fileData.slug !== "index" &&
+        page.fileData.slug !== "en/index" &&
+        page.fileData.slug !== "ko/index",
     }),
     Component.ArticleTitle(),
     Component.ConditionalRender({
@@ -115,7 +119,7 @@ export const defaultListPageLayout: PageLayout = {
     }),
     Component.ConditionalRender({
       component: enExplorer,
-      condition: (page) => !page.fileData.slug?.startsWith("ko/"),
+      condition: (page) => !!page.fileData.slug?.startsWith("en/"),
     }),
     Component.ConditionalRender({
       component: koExplorer,

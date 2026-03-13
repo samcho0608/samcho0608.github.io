@@ -25,6 +25,7 @@ import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import LanguageSwitcher from "./LanguageSwitcher"
 import SeriesNav from "./SeriesNav"
+import LocaleRedirect from "./LocaleRedirect"
 
 export {
   ArticleTitle,
@@ -54,4 +55,5 @@ export {
   ConditionalRender,
   LanguageSwitcher,
   SeriesNav,
+  LocaleRedirect,
 }

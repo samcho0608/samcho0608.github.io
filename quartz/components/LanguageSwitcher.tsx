@@ -19,12 +19,12 @@ const LanguageSwitcher: QuartzComponent = ({
   const isKoPage = currentLang === "ko"
 
   // URL structure:
-  //   EN: index, tech/router-vpn-01, ...
+  //   EN: en/index, en/tech/router-vpn-01, ...
   //   KO: ko/index, ko/tech/router-vpn-01, ...
-  // Counterpart: strip or prepend "ko/" prefix
+  // Counterpart: swap "en/" ↔ "ko/" prefix
   const counterpartSlug: FullSlug = isKoPage
-    ? (slug.startsWith("ko/") ? slug.slice(3) : slug) as FullSlug
-    : (`ko/${slug}` as FullSlug)
+    ? (`en/${slug.startsWith("ko/") ? slug.slice(3) : slug}` as FullSlug)
+    : (`ko/${slug.startsWith("en/") ? slug.slice(3) : slug}` as FullSlug)
 
   const counterLang = isKoPage ? "en" : "ko"
   const counterFile = allFiles.find(

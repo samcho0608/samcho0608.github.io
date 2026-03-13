@@ -6,8 +6,9 @@ const PageTitle: QuartzComponent = ({ fileData, cfg, displayClass }: QuartzCompo
   const title = cfg?.pageTitle ?? i18n(cfg.locale).propertyDefaults.title
   const slug = fileData.slug!
   const isKoPage = slug.startsWith("ko/") || slug === "ko"
-  // KO pages link to /ko/ home; EN pages always link to / (root home)
-  const baseDir = isKoPage ? "/ko/" : "/"
+  const isEnPage = slug.startsWith("en/") || slug === "en"
+  // KO pages link to /ko/ home; EN pages link to /en/ home; root page links to /
+  const baseDir = isKoPage ? "/ko/" : isEnPage ? "/en/" : "/"
   return (
     <h2 class={classNames(displayClass, "page-title")}>
       <a href={baseDir}>{title}</a>
