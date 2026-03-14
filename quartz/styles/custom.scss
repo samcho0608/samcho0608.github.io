@@ -372,14 +372,14 @@ article.resume-page .resume-entry-body ul {
   .page > #quartz-body {
     row-gap: 0.8rem;
     box-sizing: border-box;
-    padding-left: 0;
-    padding-right: 0;
-    max-width: 100%;
+    // Horizontal padding provides the body-card indentation via the grid track.
+    // The sidebar uses negative margins to bleed back to full viewport width.
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 
   .page > #quartz-body .sidebar {
     padding: 0;
-    max-width: 100%;
   }
 
   .page > #quartz-body .sidebar.left > *:not(.page-title),
@@ -388,8 +388,12 @@ article.resume-page .resume-entry-body ul {
     box-shadow: none;
   }
 
-  // Sticky header bar: internal padding so items have room from the edges
+  // Sticky header: bleed to full viewport width by negating the grid padding,
+  // then restore the same amount as internal padding for item spacing.
   .page > #quartz-body .sidebar.left:has(.explorer) {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    width: calc(100% + 1.5rem);
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
     gap: 0.5rem;
@@ -423,14 +427,11 @@ article.resume-page .resume-entry-body ul {
     flex: 0 0 0;
   }
 
-  // On mobile, unify the title area + article into one card on .center.
-  // Use full selector to match base.scss's specificity (.page > #quartz-body .center)
-  // so that min-width: 0 and the horizontal margins actually take effect.
+  // Body card: the grid track is already viewport-minus-padding wide
+  // (from #quartz-body's 0.75rem horizontal padding), so min-width/max-width
+  // from base.scss naturally give the card the correct inset width.
   .page > #quartz-body .center {
     box-sizing: border-box;
-    min-width: 0;
-    margin-left: 0.75rem;
-    margin-right: 0.75rem;
     border: 1px solid var(--surfaceBorder);
     border-radius: 18px;
     background: var(--surface);
