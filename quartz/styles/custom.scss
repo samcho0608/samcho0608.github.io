@@ -378,10 +378,10 @@ article.resume-page .resume-entry-body ul {
     box-shadow: none;
   }
 
-  // Sticky header bar: no horizontal padding so it spans full width
+  // Sticky header bar: internal padding so items have room from the edges
   .page > #quartz-body .sidebar.left:has(.explorer) {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
     gap: 0.5rem;
   }
 
@@ -413,9 +413,10 @@ article.resume-page .resume-entry-body ul {
     flex: 0 0 0;
   }
 
-  // On mobile, unify the title area + article into one card on .center
-  // min-width: 0 overrides base.scss's min-width: 100% so margins work correctly
-  .center {
+  // On mobile, unify the title area + article into one card on .center.
+  // Use full selector to match base.scss's specificity (.page > #quartz-body .center)
+  // so that min-width: 0 and the horizontal margins actually take effect.
+  .page > #quartz-body .center {
     box-sizing: border-box;
     min-width: 0;
     margin-left: 0.75rem;
