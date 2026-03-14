@@ -363,6 +363,7 @@ article.resume-page .resume-entry-body ul {
 @media all and (max-width: 800px) {
   .page > #quartz-body {
     row-gap: 0.8rem;
+    box-sizing: border-box;
   }
 
   .page > #quartz-body .sidebar {
@@ -375,9 +376,22 @@ article.resume-page .resume-entry-body ul {
     box-shadow: none;
   }
 
-  .center article {
+  // On mobile, unify the title area + article into one card on .center
+  .center {
+    box-sizing: border-box;
+    border: 1px solid var(--surfaceBorder);
     border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--softShadow);
     padding: 1.4rem 1.05rem;
+  }
+
+  .center article {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
   }
 
   article.resume-page table {
@@ -393,5 +407,17 @@ article.resume-page .resume-entry-body ul {
   li.section-li > .section {
     grid-template-columns: 1fr;
     gap: 0.35rem;
+  }
+}
+
+@media all and (max-width: 800px) {
+  [saved-theme="dark"] .center {
+    background: var(--surface);
+    border-color: var(--surfaceBorder);
+  }
+
+  [saved-theme="dark"] .center article {
+    background: transparent;
+    border-color: transparent;
   }
 }
