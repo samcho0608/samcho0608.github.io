@@ -376,6 +376,41 @@ article.resume-page .resume-entry-body ul {
     box-shadow: none;
   }
 
+  // Sticky header bar: horizontal breathing room
+  .page > #quartz-body .sidebar.left:has(.explorer) {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    gap: 0.5rem;
+  }
+
+  // Hamburger: compact icon, no card
+  .page > #quartz-body .sidebar.left > .explorer {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0.3rem;
+    flex: 0 0 auto;
+  }
+
+  // PageTitle: give card styling, grow to fill space between hamburger and search
+  .page > #quartz-body .sidebar.left > .page-title {
+    border: 1px solid var(--surfaceBorder);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface) 85%, #eef4ff 15%);
+    padding: 0.5rem 0.85rem;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  // Spacer: no card, no grow — title fills the space instead
+  .page > #quartz-body .sidebar.left > .mobile-only.spacer {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    flex: 0 0 0;
+  }
+
   // On mobile, unify the title area + article into one card on .center
   .center {
     box-sizing: border-box;
@@ -419,5 +454,10 @@ article.resume-page .resume-entry-body ul {
   [saved-theme="dark"] .center article {
     background: transparent;
     border-color: transparent;
+  }
+
+  [saved-theme="dark"] .page > #quartz-body .sidebar.left > .page-title {
+    background: var(--surface);
+    border-color: var(--surfaceBorder);
   }
 }
