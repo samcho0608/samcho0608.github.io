@@ -7,6 +7,14 @@
   --softShadow: 0 8px 28px rgba(15, 23, 42, 0.06);
 }
 
+// base.scss sets `html { width: 100vw }` which can be a pixel or two wider
+// than the layout viewport on some mobile browsers (notably iOS Safari),
+// causing a horizontal scrollbar. `width: 100%` on the root element is
+// relative to the initial containing block and stays within the viewport.
+html {
+  width: 100%;
+}
+
 body {
   overflow-x: hidden;
   background:
@@ -31,6 +39,7 @@ body {
 
 .page {
   max-width: 1680px;
+  overflow-x: clip; // clip (not hidden) so position:sticky children still work
 }
 
 .page-title a {
