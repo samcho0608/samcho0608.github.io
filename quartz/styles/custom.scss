@@ -390,10 +390,14 @@ article.resume-page .resume-entry-body ul {
 
   // Sticky header: bleed to full viewport width by negating the grid padding,
   // then restore the same amount as internal padding for item spacing.
+  // Use width: 100vw instead of calc(100% + 1.5rem): with grid-template-columns
+  // set to `auto` (indefinite track), CSS resolves 100% against the grid
+  // *container* width (430px) rather than the track (430-padding), so
+  // calc(100% + 1.5rem) would be 1.5rem too wide.
   .page > #quartz-body .sidebar.left:has(.explorer) {
     margin-left: -0.75rem;
     margin-right: -0.75rem;
-    width: calc(100% + 1.5rem);
+    width: 100vw;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
     gap: 0.5rem;
