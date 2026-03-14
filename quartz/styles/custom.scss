@@ -22,10 +22,17 @@ body {
     var(--light);
 }
 
-// Prevent page scroll while the mobile nav drawer is open.
-// The explorer JS adds .lock-scroll to #quartz-body when the drawer opens.
-body:has(#quartz-body.lock-scroll) {
-  overflow: hidden;
+// Mobile-only: lock page scroll and make the nav drawer itself scrollable
+// while it is open. The explorer JS adds .mobile-no-scroll to <html>.
+@media all and (max-width: 800px) {
+  html.mobile-no-scroll body {
+    overflow: hidden;
+  }
+
+  // The drawer itself must scroll when its content is taller than the screen.
+  .explorer:not(.collapsed) > .explorer-content {
+    overflow-y: auto;
+  }
 }
 
 [saved-theme="dark"] {
