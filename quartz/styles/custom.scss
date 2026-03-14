@@ -412,7 +412,7 @@ article.resume-page .resume-entry-body ul {
     flex: 0 0 auto;
   }
 
-  // PageTitle: give card styling, grow to fill space between hamburger and search
+  // PageTitle: card styling, grows to fill available space
   .page > #quartz-body .sidebar.left > .page-title {
     border: 1px solid var(--surfaceBorder);
     border-radius: 14px;
@@ -420,6 +420,25 @@ article.resume-page .resume-entry-body ul {
     padding: 0.5rem 0.85rem;
     flex: 1 1 auto;
     min-width: 0;
+    overflow: visible; // let the title text be fully visible
+  }
+
+  // Collapse search to icon-only so the title has room to render in full.
+  // The search overlay still opens full-screen on click (unchanged behaviour).
+  .search > .search-button > p {
+    display: none;
+  }
+  .search > .search-button {
+    padding: 0;
+    width: 2rem;
+    justify-content: center;
+    border-radius: 8px;
+  }
+  .search {
+    min-width: unset;
+    max-width: unset;
+    flex-grow: 0;
+    flex-shrink: 0;
   }
 
   // Spacer: no card, no grow — title fills the space instead
