@@ -22,6 +22,12 @@ body {
     var(--light);
 }
 
+// Prevent page scroll while the mobile nav drawer is open.
+// The explorer JS adds .lock-scroll to #quartz-body when the drawer opens.
+body:has(#quartz-body.lock-scroll) {
+  overflow: hidden;
+}
+
 [saved-theme="dark"] {
   --surface: #1a2231;
   --surfaceAlt: #111827;
