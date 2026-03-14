@@ -8,6 +8,7 @@
 }
 
 body {
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 0% 0%, #eef4ff 0%, transparent 45%),
     radial-gradient(circle at 100% 0%, #effaf5 0%, transparent 42%),
