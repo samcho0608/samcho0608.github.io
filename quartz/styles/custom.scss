@@ -364,6 +364,8 @@ article.resume-page .resume-entry-body ul {
   .page > #quartz-body {
     row-gap: 0.8rem;
     box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .page > #quartz-body .sidebar {
@@ -376,10 +378,10 @@ article.resume-page .resume-entry-body ul {
     box-shadow: none;
   }
 
-  // Sticky header bar: horizontal breathing room
+  // Sticky header bar: no horizontal padding so it spans full width
   .page > #quartz-body .sidebar.left:has(.explorer) {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
     gap: 0.5rem;
   }
 
@@ -412,8 +414,12 @@ article.resume-page .resume-entry-body ul {
   }
 
   // On mobile, unify the title area + article into one card on .center
+  // min-width: 0 overrides base.scss's min-width: 100% so margins work correctly
   .center {
     box-sizing: border-box;
+    min-width: 0;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
     border: 1px solid var(--surfaceBorder);
     border-radius: 18px;
     background: var(--surface);
