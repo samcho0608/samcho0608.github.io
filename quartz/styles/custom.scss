@@ -406,6 +406,12 @@ article.resume-page .resume-entry-body ul {
     padding: 0;
   }
 
+  // Stack right sidebar widgets (Graph View, Backlinks, …) vertically.
+  // base.scss sets flex-direction:row on non-desktop, which places them side by side.
+  .page > #quartz-body .sidebar.right {
+    flex-direction: column;
+  }
+
   .page > #quartz-body .sidebar.left > *:not(.page-title),
   .page > #quartz-body .sidebar.right > * {
     border-radius: 12px;
