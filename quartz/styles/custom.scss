@@ -22,22 +22,22 @@ body {
     var(--light);
 }
 
-// Mobile-only: lock page scroll and make the nav drawer itself scrollable
-// while it is open. The explorer JS adds .mobile-no-scroll to <html>.
+// Mobile-only: drawer scroll behaviour when open.
+// The explorer JS adds .mobile-no-scroll to <html>.
+// We do NOT use overflow:hidden on body — on iOS Safari that resets the
+// scroll position to 0, causing the page to visibly jump to the top.
+// Instead the fixed overlay itself captures all touch events; overscroll-
+// behavior:contain stops them from propagating to the page behind it.
 @media all and (max-width: 800px) {
-  html.mobile-no-scroll body {
-    overflow: hidden;
-  }
-
-  // Drawer scroll behaviour when open:
-  // - overflow-y: auto   → scrolls only when content is taller than the screen
-  // - overscroll-behavior: contain → stops scroll events from chaining to the
-  //   page when the drawer hits its top/bottom boundary
-  // - touch-action: pan-y → tells iOS to honour the containment on touch
-  // - position: fixed    → base CSS uses position:absolute inside a sticky
-  //   container, so the drawer's layout origin is the element's flow position,
-  //   not the viewport. When scrolled down the drawer only covers the portion
-  //   below the scroll offset. Fixed positioning anchors it to the viewport.
+  // - position: fixed        → base CSS is position:absolute inside a sticky
+  //   element whose layout origin is the document flow position, not the
+  //   viewport. Scrolled down = drawer starts above the screen. Fixed anchors
+  //   the drawer to the current viewport regardless of scroll offset.
+  // - overflow-y: auto       → drawer scrolls only when content is taller than
+  //   the screen; no scroll if everything fits
+  // - overscroll-behavior: contain → touch scroll at the drawer boundary is
+  //   absorbed here and does not chain to the page behind the overlay
+  // - touch-action: pan-y    → tells iOS to honour the containment on touch
   .explorer:not(.collapsed) > .explorer-content {
     position: fixed;
     overflow-y: auto;
