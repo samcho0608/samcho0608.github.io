@@ -22,6 +22,14 @@ PageTitle.css = `
   margin: 0;
   font-family: var(--titleFont);
 }
+
+@media all and (max-width: 800px) {
+  .page-title {
+    font-size: 1rem;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+}
 `
 
 export default (() => PageTitle) satisfies QuartzComponentConstructor

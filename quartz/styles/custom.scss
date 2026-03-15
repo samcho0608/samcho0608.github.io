@@ -7,11 +7,43 @@
   --softShadow: 0 8px 28px rgba(15, 23, 42, 0.06);
 }
 
+// base.scss sets `html { width: 100vw }` which can be a pixel or two wider
+// than the layout viewport on some mobile browsers (notably iOS Safari),
+// causing a horizontal scrollbar. `width: 100%` on the root element is
+// relative to the initial containing block and stays within the viewport.
+html {
+  width: 100%;
+}
+
 body {
   background:
     radial-gradient(circle at 0% 0%, #eef4ff 0%, transparent 45%),
     radial-gradient(circle at 100% 0%, #effaf5 0%, transparent 42%),
     var(--light);
+}
+
+// Mobile-only: drawer scroll behaviour when open.
+// The explorer JS adds .mobile-no-scroll to <html>.
+// We do NOT use overflow:hidden on body — on iOS Safari that resets the
+// scroll position to 0, causing the page to visibly jump to the top.
+// Instead the fixed overlay itself captures all touch events; overscroll-
+// behavior:contain stops them from propagating to the page behind it.
+@media all and (max-width: 800px) {
+  // - position: fixed        → base CSS is position:absolute inside a sticky
+  //   element whose layout origin is the document flow position, not the
+  //   viewport. Scrolled down = drawer starts above the screen. Fixed anchors
+  //   the drawer to the current viewport regardless of scroll offset.
+  // - overflow-y: auto       → drawer scrolls only when content is taller than
+  //   the screen; no scroll if everything fits
+  // - overscroll-behavior: contain → touch scroll at the drawer boundary is
+  //   absorbed here and does not chain to the page behind the overlay
+  // - touch-action: pan-y    → tells iOS to honour the containment on touch
+  .explorer:not(.collapsed) > .explorer-content {
+    position: fixed;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
 }
 
 [saved-theme="dark"] {
@@ -363,10 +395,21 @@ article.resume-page .resume-entry-body ul {
 @media all and (max-width: 800px) {
   .page > #quartz-body {
     row-gap: 0.8rem;
+    box-sizing: border-box;
+    // Horizontal padding provides the body-card indentation via the grid track.
+    // The sidebar uses negative margins to bleed back to full viewport width.
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 
   .page > #quartz-body .sidebar {
     padding: 0;
+  }
+
+  // Stack right sidebar widgets (Graph View, Backlinks, …) vertically.
+  // base.scss sets flex-direction:row on non-desktop, which places them side by side.
+  .page > #quartz-body .sidebar.right {
+    flex-direction: column;
   }
 
   .page > #quartz-body .sidebar.left > *:not(.page-title),
@@ -375,9 +418,86 @@ article.resume-page .resume-entry-body ul {
     box-shadow: none;
   }
 
-  .center article {
+  // Sticky header: bleed to full viewport width by negating the grid padding,
+  // then restore the same amount as internal padding for item spacing.
+  // Use width: 100vw instead of calc(100% + 1.5rem): with grid-template-columns
+  // set to `auto` (indefinite track), CSS resolves 100% against the grid
+  // *container* width (430px) rather than the track (430-padding), so
+  // calc(100% + 1.5rem) would be 1.5rem too wide.
+  .page > #quartz-body .sidebar.left:has(.explorer) {
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    width: 100vw;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+    gap: 0.5rem;
+  }
+
+  // Hamburger: compact icon, no card
+  .page > #quartz-body .sidebar.left > .explorer {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0.3rem;
+    flex: 0 0 auto;
+  }
+
+  // PageTitle: card styling, grows to fill available space
+  .page > #quartz-body .sidebar.left > .page-title {
+    border: 1px solid var(--surfaceBorder);
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--surface) 85%, #eef4ff 15%);
+    padding: 0.5rem 0.85rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: visible; // let the title text be fully visible
+  }
+
+  // Collapse search to icon-only so the title has room to render in full.
+  // The search overlay still opens full-screen on click (unchanged behaviour).
+  .search > .search-button > p {
+    display: none;
+  }
+  .search > .search-button {
+    padding: 0;
+    width: 2rem;
+    justify-content: center;
+    border-radius: 8px;
+  }
+  .search {
+    min-width: unset;
+    max-width: unset;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  // Spacer: no card, no grow — title fills the space instead
+  .page > #quartz-body .sidebar.left > .mobile-only.spacer {
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    flex: 0 0 0;
+  }
+
+  // Body card: the grid track is already viewport-minus-padding wide
+  // (from #quartz-body's 0.75rem horizontal padding), so min-width/max-width
+  // from base.scss naturally give the card the correct inset width.
+  .page > #quartz-body .center {
+    box-sizing: border-box;
+    border: 1px solid var(--surfaceBorder);
     border-radius: 18px;
+    background: var(--surface);
+    box-shadow: var(--softShadow);
     padding: 1.4rem 1.05rem;
+  }
+
+  .center article {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
   }
 
   article.resume-page table {
@@ -393,5 +513,22 @@ article.resume-page .resume-entry-body ul {
   li.section-li > .section {
     grid-template-columns: 1fr;
     gap: 0.35rem;
+  }
+}
+
+@media all and (max-width: 800px) {
+  [saved-theme="dark"] .center {
+    background: var(--surface);
+    border-color: var(--surfaceBorder);
+  }
+
+  [saved-theme="dark"] .center article {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  [saved-theme="dark"] .page > #quartz-body .sidebar.left > .page-title {
+    background: var(--surface);
+    border-color: var(--surfaceBorder);
   }
 }
