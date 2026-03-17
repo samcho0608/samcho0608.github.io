@@ -1,0 +1,84 @@
+name: Update Topic Backlog on Harvest PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+
+# Serialize backlog writes — no cancel, just queue
+concurrency:
+  group: topic-backlog
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: read
+
+jobs:
+  update-backlog:
+    # Only run when a harvest-originated PR is merged
+    if: |
+      github.event.pull_request.merged == true &&
+      contains(github.event.pull_request.labels.*.name, 'from-harvest')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update TOPIC_BACKLOG.md and close harvest issue
+        uses: anthropics/claude-code-action@v1
+        env:
+          # Pass numeric PR number safely — not user-controlled free text
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            A blog post PR has just been merged. Your job is to save the remaining
+            topic ideas from the linked harvest issue into TOPIC_BACKLOG.md.
+
+            The merged PR number is available in the environment as $PR_NUMBER.
+
+            Step 1 — Find the harvest issue number.
+            Run: gh pr view $PR_NUMBER --json body
+            Parse the PR body for a reference to a harvest issue.
+            Look for patterns like: Closes #N, closes #N, Fixes #N, fixes #N,
+            Refs #N, refs #N, or a bare "#N" in context of a GitHub issue reference.
+            If no issue number is found, output "No harvest issue linked — nothing to do." and stop.
+
+            Step 2 — Fetch all topics from the harvest issue.
+            Run: gh issue view <N> --json body,comments
+            Extract topic ideas from:
+            - The issue body: numbered or bulleted items (lines starting with 1., 2., -, *)
+            - User comments: any non-empty, non-bot comment lines that read as topic ideas
+              (skip short acknowledgements, emoji-only lines, bot messages)
+
+            Step 3 — Identify the topic that was just written.
+            Run: gh pr diff $PR_NUMBER
+            Read the diff to identify the title of the new blog post (from the frontmatter
+            title: field of any new .md file in content/). Exclude this topic from
+            the list of remaining topics so you don't backlog what was just published.
+
+            Step 4 — Update TOPIC_BACKLOG.md.
+            For each remaining topic, append a line in this exact format:
+              - [ ] Topic text here  <!-- #N YYYY-MM-DD -->
+            where N is the harvest issue number and YYYY-MM-DD is today's date.
+
+            If TOPIC_BACKLOG.md does not exist, create it with this header first:
+              # Topic Backlog
+
+            If the file already exists, append after the last existing line.
+            Do not duplicate topics already present in the file.
+
+            Step 5 — Commit and push.
+            Run:
+              git config user.name "github-actions[bot]"
+              git config user.email "github-actions[bot]@users.noreply.github.com"
+              git add TOPIC_BACKLOG.md
+              git commit -m "chore: update topic backlog from #<N>"
+              git push
+
+            Step 6 — Close the harvest issue.
+            Run: gh issue close <N> --comment "Topics saved to TOPIC_BACKLOG.md."
