@@ -9,4 +9,5 @@ tsconfig.tsbuildinfo
 private/
 .replit
 replit.nix
-.claude/
+.claude/settings.local.json
+.claude/worktrees/

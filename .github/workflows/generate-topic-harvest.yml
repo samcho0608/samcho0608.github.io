@@ -1,0 +1,66 @@
+name: Generate Topic Harvest Issue
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 9 * * 1'  # Monday 9am UTC (6pm KST) — enable when posting cadence warrants it
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate topic suggestions and open harvest issue
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            You are helping a personal blog author come up with new writing topics.
+
+            First, check if there is already an open issue with the label "topic-harvest":
+              gh issue list -l topic-harvest --state open --json number,title
+
+            If any results are returned, stop immediately and output: "A topic-harvest issue is already open. Nothing to do."
+
+            Otherwise, do the following:
+
+            1. Read the frontmatter (title, tags, date) from all Markdown files under content/en/,
+               but EXCLUDE any file named index.md.
+               Use this to understand what has already been written.
+
+            2. Read TOPIC_BACKLOG.md if it exists. Use this to understand what topics are
+               already queued, so you don't re-suggest them.
+
+            3. Suggest exactly 5 new topic ideas for the author to consider. Each suggestion must:
+               - Fit the blog's voice: direct, honest, personal, not generic or AI-sounding
+               - Come from the blog's actual range: tech deep-dives, personal reflections,
+                 side projects, music/clarinet teaching, life observations, travel, homelab
+               - NOT duplicate or closely overlap any existing post or backlog entry
+               - Be concrete enough that the author knows what to write about (not vague)
+
+            4. Create a GitHub Issue with:
+               - Label: topic-harvest
+               - Title: 📝 Topic Harvest — YYYY-MM-DD  (use today's actual date)
+               - Body in this exact format:
+
+                 ## AI-suggested topics
+
+                 1. [suggestion 1]
+                 2. [suggestion 2]
+                 3. [suggestion 3]
+                 4. [suggestion 4]
+                 5. [suggestion 5]
+
+                 ---
+
+                 Add your own topics as comments below.
+                 Current backlog is in `TOPIC_BACKLOG.md` for reference.
+
+            Use: gh issue create --label topic-harvest --title "..." --body "..."
