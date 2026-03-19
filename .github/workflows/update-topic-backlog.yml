@@ -60,7 +60,7 @@ jobs:
             Step 3 — Identify the topic that was just written.
             Run: gh pr diff $PR_NUMBER
             Read the diff to identify the title of the new blog post (from the frontmatter
-            title: field of any new .md file in content/). Exclude this topic from
+            title: field of any new .md file in content/en/). Exclude this topic from
             the list of remaining topics so you don't backlog what was just published.
 
             Step 4 — Update TOPIC_BACKLOG.md.

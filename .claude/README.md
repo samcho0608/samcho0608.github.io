@@ -15,11 +15,13 @@ Nothing is invented. The bullet points you provide ground every draft in real ex
 ## One-time setup
 
 **GitHub secrets** (`Settings → Secrets and variables → Actions`):
+
 ```
 ANTHROPIC_API_KEY
 ```
 
 **GitHub labels** (run once):
+
 ```bash
 gh label create "topic-harvest" --color "0075ca" --description "Weekly topic suggestion issue"
 gh label create "from-harvest"  --color "e4e669" --description "PR originated from a topic harvest issue"
@@ -50,6 +52,7 @@ Run in Claude Code:
 ```
 
 Claude walks through:
+
 1. Topic selection (from issue or inline)
 2. Category (`tech`, `life`, `music`, or anything else) + publish date
 3. EN draft → interactive review loop (you request changes until it's right)
@@ -61,6 +64,7 @@ The PR body includes `Closes #N` and the `from-harvest` label if the post came f
 ### 3. Backlog update (automatic)
 
 When a `from-harvest`-labelled PR merges, a workflow runs automatically:
+
 - Reads the linked harvest issue
 - Extracts all topics that weren't written
 - Appends them to `TOPIC_BACKLOG.md`
@@ -72,22 +76,22 @@ PRs without the `from-harvest` label are ignored by this workflow.
 
 ## Files
 
-| File | Purpose |
-|---|---|
-| `.claude/commands/blog-create.md` | Main command — end-to-end post production |
-| `.claude/commands/blog-draft-en.md` | Draft EN only |
-| `.claude/commands/blog-draft-ko.md` | Draft KO-original post |
-| `.claude/commands/blog-localize-ko.md` | Localize an existing EN post to KO |
-| `.claude/commands/blog-review.md` | Review a draft without rewriting |
-| `.claude/commands/blog-revise.md` | Revise a draft while preserving voice |
-| `.claude/style/blog-core.md` | Voice and style rules (language-neutral) |
-| `.claude/style/english-blog-style.md` | EN-specific style rules |
-| `.claude/style/korean-blog-style.md` | KO-specific style rules (localization, not translation) |
-| `.github/workflows/generate-topic-harvest.yml` | Opens harvest issue on demand |
-| `.github/workflows/update-topic-backlog.yml` | Saves unused topics on PR merge |
-| `.github/workflows/publish-next.yml` | Pops `PUBLISH_QUEUE.txt` on schedule |
-| `TOPIC_BACKLOG.md` | Checklist of queued topic ideas |
-| `PUBLISH_QUEUE.txt` | Scheduled post queue (author-controlled) |
+| File                                           | Purpose                                                 |
+| ---------------------------------------------- | ------------------------------------------------------- |
+| `.claude/commands/blog-create.md`              | Main command — end-to-end post production               |
+| `.claude/commands/blog-draft-en.md`            | Draft EN only                                           |
+| `.claude/commands/blog-draft-ko.md`            | Draft KO-original post                                  |
+| `.claude/commands/blog-localize-ko.md`         | Localize an existing EN post to KO                      |
+| `.claude/commands/blog-review.md`              | Review a draft without rewriting                        |
+| `.claude/commands/blog-revise.md`              | Revise a draft while preserving voice                   |
+| `.claude/style/blog-core.md`                   | Voice and style rules (language-neutral)                |
+| `.claude/style/english-blog-style.md`          | EN-specific style rules                                 |
+| `.claude/style/korean-blog-style.md`           | KO-specific style rules (localization, not translation) |
+| `.github/workflows/generate-topic-harvest.yml` | Opens harvest issue on demand                           |
+| `.github/workflows/update-topic-backlog.yml`   | Saves unused topics on PR merge                         |
+| `.github/workflows/publish-next.yml`           | Pops `PUBLISH_QUEUE.txt` on schedule                    |
+| `TOPIC_BACKLOG.md`                             | Checklist of queued topic ideas                         |
+| `PUBLISH_QUEUE.txt`                            | Scheduled post queue (author-controlled)                |
 
 ---
 
@@ -108,13 +112,13 @@ PRs without the `from-harvest` label are ignored by this workflow.
 
 ## What is and isn't automated
 
-| | Automated | Manual |
-|---|---|---|
-| Topic suggestions | ✅ harvest workflow | — |
-| EN draft | ✅ /blog-create | — |
-| KO localization | ✅ /blog-create | — |
-| PR creation | ✅ /blog-create | — |
-| Backlog update | ✅ on PR merge | — |
-| Content review | — | ✅ you |
-| Publish scheduling | — | ✅ PUBLISH_QUEUE.txt |
-| Deploy | ✅ publish-next.yml | — |
+|                    | Automated           | Manual               |
+| ------------------ | ------------------- | -------------------- |
+| Topic suggestions  | ✅ harvest workflow | —                    |
+| EN draft           | ✅ /blog-create     | —                    |
+| KO localization    | ✅ /blog-create     | —                    |
+| PR creation        | ✅ /blog-create     | —                    |
+| Backlog update     | ✅ on PR merge      | —                    |
+| Content review     | —                   | ✅ you               |
+| Publish scheduling | —                   | ✅ PUBLISH_QUEUE.txt |
+| Deploy             | ✅ publish-next.yml | —                    |

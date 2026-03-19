@@ -6,6 +6,7 @@ argument-hint: [issue number | #N | topic brief]
 Create a complete bilingual blog post (EN + KO) from topic to PR.
 
 Use these rules throughout:
+
 - `/CLAUDE.md`
 - `/.claude/style/blog-core.md`
 - `/.claude/style/english-blog-style.md`
@@ -19,27 +20,29 @@ Use these rules throughout:
 Determine what to write about based on the argument:
 
 **If the argument is a number or starts with `#`** (e.g. `42`, `#42`):
-  Run: `gh issue view <N> --json title,body,comments`
-  Parse and display all topic ideas found in:
-  - The issue body (numbered or bulleted items)
-  - User comments (skip bot messages, short replies, acknowledgements)
+Run: `gh issue view <N> --json title,body,comments`
+Parse and display all topic ideas found in:
+
+- The issue body (numbered or bulleted items)
+- User comments (skip bot messages, short replies, acknowledgements)
   Label each with a number for the user to pick from.
   Store the issue number as N for later use.
 
 **If the argument is plain text** (a topic brief):
-  Use the text directly as the selected topic. Skip issue fetch. N = none.
+Use the text directly as the selected topic. Skip issue fetch. N = none.
 
 **If there is no argument**:
-  Run: `gh issue list -l topic-harvest --state open --json number,title`
-  Display the list and ask: "Which issue would you like to work from? Or type a topic directly."
-  If the user picks an issue number, fetch it as above.
-  If the user types a topic, use it directly. N = none.
+Run: `gh issue list -l topic-harvest --state open --json number,title`
+Display the list and ask: "Which issue would you like to work from? Or type a topic directly."
+If the user picks an issue number, fetch it as above.
+If the user types a topic, use it directly. N = none.
 
 ---
 
 ## Step 2 — Confirm post details
 
 Ask the user (in a single prompt, not separate messages):
+
 1. Which topic to write — show the options if multiple were loaded from an issue
 2. Category for the post: `tech`, `life`, `music`, or other (user can specify any string)
 3. Target publish date (suggest 7 days from today as default)
@@ -48,6 +51,7 @@ Derive the slug: lowercase, hyphenated, max 5 words from the topic title.
 Example: "Setting up a home VPN with WireGuard" → `home-vpn-wireguard`
 
 Create a working branch:
+
 ```
 git checkout -b post/<slug>
 ```
@@ -59,6 +63,7 @@ git checkout -b post/<slug>
 Apply all rules from `/CLAUDE.md`, `/.claude/style/blog-core.md`, `/.claude/style/english-blog-style.md`.
 
 Before writing:
+
 - Identify the post type: technical / reflective / personal / mixed
 - Choose a structure appropriate to the content — do not force a template
 - Do not invent experience, metrics, timelines, or conclusions
@@ -66,7 +71,8 @@ Before writing:
 
 Write a complete draft in natural English prose.
 
-Save to `content/<category>/<slug>.md` with this frontmatter:
+Save to `content/en/<category>/<slug>.md` with this frontmatter:
+
 ```yaml
 ---
 title: "Post Title"
@@ -89,6 +95,7 @@ Use today's date for `date`.
 Present the full EN draft to the user.
 
 Silently run these checks before presenting (fix obvious issues inline without mentioning them):
+
 - Does it sound natural in English, not like AI prose?
 - Is the structure appropriate and not forced?
 - Is the voice direct, grounded, honest?
@@ -98,10 +105,11 @@ Silently run these checks before presenting (fix obvious issues inline without m
 Ask: "How does this look? Any changes, or shall I move on to the Korean version?"
 
 Enter a review loop:
+
 - Apply any requested edits precisely — do not rewrite sections that weren't asked about
 - Re-present the changed section (or full post if the change was structural)
 - Ask again until the user says "done", "good", "looks good", "move on", or similar
-- Update `content/<category>/<slug>.md` with all approved changes before proceeding
+- Update `content/en/<category>/<slug>.md` with all approved changes before proceeding
 
 ---
 
@@ -110,6 +118,7 @@ Enter a review loop:
 Apply rules from `/.claude/style/korean-blog-style.md` and `/content/ko/CLAUDE.md`.
 
 This is a full localization, not a translation. Rules:
+
 - Rewrite for natural Korean reading flow — reorder paragraphs if it helps
 - Do NOT copy English sentence rhythm or structure
 - Avoid 번역투 (translation-speak)
@@ -118,6 +127,7 @@ This is a full localization, not a translation. Rules:
 - Korean-specific structural adjustments are expected and encouraged
 
 Save to `content/ko/<category>/<slug>.md` with this frontmatter:
+
 ```yaml
 ---
 title: "한국어 제목"
@@ -140,6 +150,7 @@ Same `date` and `tags` as the EN version. Title and description localized, not t
 Present the full KO draft to the user.
 
 Silently run these checks before presenting:
+
 - Does it sound like natural Korean, not a translation?
 - Is the sentence rhythm Korean, not English?
 - Are there any 번역투 phrases to remove?
@@ -148,6 +159,7 @@ Silently run these checks before presenting:
 Ask: "How does the Korean version look? Any changes, or shall I commit and open the PR?"
 
 Enter a review loop:
+
 - Apply any requested edits
 - Re-present the changed section or full draft as needed
 - Ask again until the user approves
@@ -160,7 +172,7 @@ Enter a review loop:
 Once both drafts are approved, run:
 
 ```bash
-git add content/<category>/<slug>.md content/ko/<category>/<slug>.md
+git add content/en/<category>/<slug>.md content/ko/<category>/<slug>.md
 git commit -m "content: add <slug>"
 git push -u origin post/<slug>
 ```
@@ -186,5 +198,6 @@ If there was no linked harvest issue (N = none), omit `Closes #N` from the body 
 Output the PR URL.
 
 Remind the user:
+
 > When you're ready to schedule this post, add the following line to `PUBLISH_QUEUE.txt`:
-> `content/<category>/<slug>.md content/ko/<category>/<slug>.md`
+> `content/en/<category>/<slug>.md content/ko/<category>/<slug>.md`

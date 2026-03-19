@@ -31,8 +31,8 @@ jobs:
 
             Otherwise, do the following:
 
-            1. Read the frontmatter (title, tags, date) from all Markdown files under content/,
-               but EXCLUDE: content/ko/, content/en/, and any file named index.md.
+            1. Read the frontmatter (title, tags, date) from all Markdown files under content/en/,
+               but EXCLUDE any file named index.md.
                Use this to understand what has already been written.
 
             2. Read TOPIC_BACKLOG.md if it exists. Use this to understand what topics are
