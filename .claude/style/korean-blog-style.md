@@ -14,6 +14,7 @@ Apply this for Korean localized posts in `content/ko/`.
 ## 화법의 질감
 
 내 글은 보통:
+
 - 직접적이다
 - 단정은 하지만 허세는 없다
 - 감정보다 판단과 관찰이 중심이다
@@ -22,6 +23,7 @@ Apply this for Korean localized posts in `content/ko/`.
 - 실제로 중요했던 지점을 좁혀 들어가는 식으로 전개된다
 
 자연스러운 전개 예시:
+
 - 결국 중요한 건 ...
 - 문제는 ...
 - 처음엔 이렇게 생각했는데, 실제로는 ...
@@ -45,6 +47,7 @@ Apply this for Korean localized posts in `content/ko/`.
 - 같은 말을 표현만 바꿔 반복하지 않는다
 
 피해야 하는 표현:
+
 - 오늘날 빠르게 변화하는 ...
 - 여정
 - 인사이트를 제공하다
@@ -58,6 +61,7 @@ Apply this for Korean localized posts in `content/ko/`.
 ## 비기술 주제
 
 삶, 생각, 일, 관계, 음악, 취향, 여행, 일상 같은 글에서는:
+
 - 솔직하게 쓴다
 - 과장하지 않는다
 - 괜히 무게 잡지 않는다

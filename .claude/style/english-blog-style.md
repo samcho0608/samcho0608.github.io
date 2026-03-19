@@ -1,10 +1,11 @@
 # English Blog Style
 
-Apply this for English posts in `content/`.
+Apply this for English posts in `content/en/`.
 
 ## Core style
 
 Write in English that feels:
+
 - natural
 - direct
 - grounded
@@ -13,6 +14,7 @@ Write in English that feels:
 - thoughtful without sounding performative
 
 Do not make the prose sound:
+
 - translated
 - corporate
 - devrel-like
@@ -22,6 +24,7 @@ Do not make the prose sound:
 ## Readability
 
 Prioritize:
+
 - natural paragraph flow
 - clear transitions
 - readable pacing
@@ -32,6 +35,7 @@ A good post should feel readable first and structured second.
 ## Voice cues
 
 The writing often works well when it:
+
 - gets to the point reasonably early
 - narrows toward what actually mattered
 - contrasts expectation and reality
@@ -40,6 +44,7 @@ The writing often works well when it:
 - avoids pretending that every piece has a neat takeaway
 
 Useful movements include:
+
 - “What mattered more was ...”
 - “At first, this looked like ... but the real issue was ...”
 - “In theory, that sounds reasonable. In practice, ...”
@@ -52,6 +57,7 @@ These are examples, not required phrases.
 ## Technical writing
 
 When the topic is technical:
+
 - stay close to real engineering judgment
 - explain actual constraints
 - explain trade-offs honestly
@@ -60,6 +66,7 @@ When the topic is technical:
 - include detail only when it helps understanding
 
 Useful details may include:
+
 - scale
 - latency
 - failure modes
@@ -72,6 +79,7 @@ Useful details may include:
 - complexity trade-offs
 
 Avoid phrases like:
+
 - robust and scalable
 - seamless
 - production-ready
@@ -83,6 +91,7 @@ unless they are explained concretely.
 ## Non-technical writing
 
 If the topic is personal, reflective, cultural, or about music:
+
 - do not force a technical voice onto it
 - do not turn it into self-help writing
 - do not try to sound profound
@@ -90,6 +99,7 @@ If the topic is personal, reflective, cultural, or about music:
 - preserve specificity and restraint
 
 A post can simply preserve:
+
 - a thought
 - a change in judgment
 - a personal preference

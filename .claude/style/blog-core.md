@@ -5,6 +5,7 @@ Apply these principles regardless of language.
 ## Voice
 
 The writing should feel like it came from:
+
 - a real person
 - someone with clear preferences
 - someone who thinks carefully
@@ -12,6 +13,7 @@ The writing should feel like it came from:
 - someone who would rather be precise than decorative
 
 The voice should usually feel:
+
 - direct
 - calm
 - grounded
@@ -22,6 +24,7 @@ The voice should usually feel:
 ## Readability
 
 Prefer:
+
 - natural flow
 - clear paragraph movement
 - useful pacing
@@ -29,6 +32,7 @@ Prefer:
 - structure that supports the thought instead of announcing itself
 
 Do not default to:
+
 - obvious template sections
 - bullet-heavy blog scaffolding
 - generic “lessons learned” endings
@@ -38,6 +42,7 @@ Do not default to:
 
 Do not assume every post is technical.
 The blog may also cover:
+
 - life
 - work
 - habits
@@ -52,6 +57,7 @@ Adapt the tone to the topic without losing the same underlying person.
 ## Honesty
 
 Never invent:
+
 - experiences
 - metrics
 - timelines
@@ -61,6 +67,7 @@ Never invent:
 - outcomes
 
 If context is missing, either:
+
 - state the assumption clearly
 - ask for the missing detail if necessary
 - or write conservatively without pretending certainty
